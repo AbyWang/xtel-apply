@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdxt.ds.web.lesson.dao.ExamDao">
+
+<!-- 查询已报名信息课程 -->
+<select id="getExaminationPage"  parameterType="int" resultType="map">
+SELECT a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
+a.UPLOADTIME,b.NAME,b.TYPE
+
+FROM XTEL_ExamPapers a  left join XTEL_CourseInfo b on a.COURSEID=b.COURSEID where a.UPLOADERID=#{userID}
+
+</select>
+<select id="getExaminationArrangementPage" parameterType="int" resultType="map">
+select a.ID,a.TIME,a.COURSEID,a.PAPERID,a.STATUS,a.USERID,a.TYPE,b.PAPERNAME,c.NAME,d.USERNAME from XTEL_ExamArrangement a LEFT join  XTEL_ExamPapers b on a.COURSEID=b.ID
+
+left join XTEL_CourseInfo c on a.PAPERID=c.COURSEID 
+left join XTEL_userinfotable d on a.USERID=d.USERID  
+where a.USERID=#{userID}
+</select>
+   
+<!--查询成绩管理信息  -->
+<select id="getUserPerformancePage" parameterType="int"  resultType="map">
+
+select a.USERID,a.PAPERID,a.EXAMID,a.LECTUREID,a.TIME,a.PERFORMANCE,a.EXAMTIME,b.PAPERNAME,c.NAME,d.USERNAME  from  XTEL_UserPerformance  a  left join XTEL_ExamPapers b
+
+on a.PAPERID=b.ID left join XTEL_CourseInfo c on b.COURSEID=c.COURSEID left join XTEL_USERINFOTABLE d on a.USERID=d.USERID
+
+where a.USERID=#{userID}
+
+
+</select>
+
+
+
+</mapper>
