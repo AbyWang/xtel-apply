@@ -62,17 +62,22 @@ public class UserServiceImpl implements UserService {
 	 * @param
 	 * @return
 	 */
-	public ResJson  addUser(String userName,String password){
+	public ResJson  addUser(String userName,String password,Integer groupId){
 		Map<String, Object> paramMap = new HashMap<String, Object>();
 		//把密码进行加密处理
 		password = MD5.toMD5(password); 
 		paramMap.put("uName", userName);
 		paramMap.put("pwd", password);
+		paramMap.put("groupId", groupId);
 		paramMap.put("returnValue", 1);
 		userDao.addUser(paramMap);
 		if((int)paramMap.get("returnValue")==0){
 			return new ResJson(SysConstants.STRING_ZERO,"用户名已存在");
 		}
 		return new ResJson(SysConstants.STRING_ONE,"注册成功");
+	}
+	
+	public  List<Map<String, Object>> getAllGroup(){
+		return userDao.getAllGroup();
 	}
 }

@@ -61,4 +61,14 @@ public interface UserDao {
 	 * @return
 	 */
 	Map<String, Object> addUser(Map<String, Object> paramMap);
+	
+	/**
+	 * 
+	 * @Title: getAllGroup
+	 * @author wangxiaolong
+	 * @Description:查询所有群组
+	 * @param
+	 * @return
+	 */
+	List<Map<String, Object>>getAllGroup();
 }

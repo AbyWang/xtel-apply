@@ -57,8 +57,16 @@
            {call US246.XTEL_SIGUP(
               #{uName,mode=IN,jdbcType=VARCHAR},
               #{pwd,mode=IN,jdbcType=VARCHAR},
+              #{groupId,mode=IN,jdbcType=INTEGER},
               #{returnValue,mode=OUT,jdbcType=INTEGER}
            )}    
        ]]>
 </select>
+
+
+    <!-- 查询所有群组 -->
+    <select id="getAllGroup"  resultType="java.util.HashMap" >
+
+       select b.NAME,b.id  FROM XTEL_GroupInfo b 
+    </select>
 </mapper>

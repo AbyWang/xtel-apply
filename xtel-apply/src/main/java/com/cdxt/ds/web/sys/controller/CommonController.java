@@ -16,13 +16,9 @@ import org.springframework.web.servlet.ModelAndView;
  * @date 2018年7月18日
  */
 @Controller
-public class SystemController {
+public class CommonController {
 
 
-	@RequestMapping("/toSignUp")
-	public String gotoSignUp(){
-		return "main/signup";
-	}
 	
 	@RequestMapping("/logout")
 	public String logout(HttpSession session){
@@ -31,6 +27,7 @@ public class SystemController {
 		session.invalidate();
 		return "redirect:/toLogin";
 	}
+	
 	
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin(){
@@ -143,9 +140,4 @@ public class SystemController {
 		return "exam/ownGrade_list";
 	}
 	
-	
-	@RequestMapping("/addApply")
-	public String addApply(){
-		return "lesson/addApply";
-	}
 }

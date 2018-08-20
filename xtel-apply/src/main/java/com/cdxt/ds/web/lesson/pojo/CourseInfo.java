@@ -1,21 +1,16 @@
 package com.cdxt.ds.web.lesson.pojo;
 
+import java.util.List;
 
 /**
- * @类描述：课程信息表
- * @项目名称：teachingSystem
- * @包名： com.cdxt.ms.model
- * @类名称：CourseInfo
- * @创建人：张兴成
- * @创建时间：2018年4月26日上午9:45:21
- * @修改人：张兴成
- * @修改时间：2018年4月26日上午9:45:21
- * @修改备注：
- * @version v1.0
- * @see 
- * @bug 
- * @Copyright 
- * @mail *@qq.com
+ * 
+ * 
+ * @ClassName: CourseInfo.java
+ * @Description: 课程信息
+ * @author wangxiaolong
+ * @Copyright: Copyright (c) 2017
+ * @Company:成都信通网易医疗科技发展有限公司
+ * @date 2018年8月8日
  */
 public class CourseInfo {
 	//课程ID
@@ -38,7 +33,7 @@ public class CourseInfo {
 	//课程类型
 	//0 – 传统直播授课
 	//1 – 智能授课
-	private int courseType;
+	private int type;
 	//已售出数量
 	private int sold;
 	//已通过该门课程的人数
@@ -50,6 +45,8 @@ public class CourseInfo {
 	//课程简介
 	private String brief;
 
+	private List<CoursePlan>coursePlan;
+	
 	public int getCourseID() {
 		return courseID;
 	}
@@ -86,11 +83,12 @@ public class CourseInfo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public int getCourseType() {
-		return courseType;
+
+	public int getType() {
+		return type;
 	}
-	public void setCourseType(int courseType) {
-		this.courseType = courseType;
+	public void setType(int type) {
+		this.type = type;
 	}
 	public int getSold() {
 		return sold;
@@ -123,13 +121,11 @@ public class CourseInfo {
 	public void setBrief(String brief) {
 		this.brief = brief;
 	}
-	@Override
-	public String toString() {
-		return "CourseInfo [courseID=" + courseID + ", lecturerID=" + lecturerID + ", name=" + name + ", status="
-				+ status + ", totalClass=" + totalClass + ", price=" + price + ", courseType=" + courseType + ", sold="
-				+ sold + ", pass=" + pass + ", lastClassTime=" + lastClassTime + ", reviewerID=" + reviewerID
-				+ ", brief=" + brief + "]";
+	public List<CoursePlan> getCoursePlan() {
+		return coursePlan;
 	}
-	
+	public void setCoursePlan(List<CoursePlan> coursePlan) {
+		this.coursePlan = coursePlan;
+	}
 
 }

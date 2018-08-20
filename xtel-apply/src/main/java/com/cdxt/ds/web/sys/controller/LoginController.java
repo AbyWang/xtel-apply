@@ -3,6 +3,7 @@ package com.cdxt.ds.web.sys.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,6 +40,15 @@ public class LoginController {
 	private UserService userService;
 
 
+
+	@RequestMapping("/toSignUp")
+	public String gotoSignUp(HttpServletRequest request){
+		List<Map<String, Object>>groupList=userService.getAllGroup();
+		request.setAttribute("group", groupList);
+		return "main/signup";
+	}
+
+
 	/**
 	 * 检查用户名称
 	 * 
@@ -52,7 +62,6 @@ public class LoginController {
 	public AjaxJson checkuser(HttpServletRequest req,@RequestParam("loginname")String loginName,
 			@RequestParam("password")String password) throws Exception {
 		AjaxJson json=new AjaxJson();
-		//	HttpSession session = ContextHolderUtils.getSession();
 		//通过登录名名查询manager
 		UserInfo userInfo=userService.getuUserInfoByLoginName(loginName);
 		//登录密码MD5加密
@@ -78,13 +87,21 @@ public class LoginController {
 	}
 
 
-
+	/**
+	 * 
+	 * @Title: registerUser
+	 * @author wangxiaolong
+	 * @Description:用户注册
+	 * @param
+	 * @return
+	 */
 	@RequestMapping("/register")
 	@ResponseBody
-	public ResJson registerUser(@RequestParam("userName")String userName,@RequestParam("password")String password){
-		
-		
-		return userService.addUser(userName,password);
+	public ResJson registerUser(@RequestParam("userName")String userName,@RequestParam("password")String password,
+			@RequestParam("groupId")Integer groupId){
+
+
+		return userService.addUser(userName,password,groupId);
 	}
 
 	/**
@@ -156,5 +173,7 @@ public class LoginController {
 		}
 		return childList;
 	}
-	
+
+
+
 }

@@ -12,24 +12,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>用户列表</title>
 <!-- Jquery组件引用 -->
 <script src="plug-in/jquery/jquery-1.9.1.js"></script>
-<!-- <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script> -->
 <!-- bootstrap组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-<!-- <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
-
 <!-- bootstrap table组件以及中文包的引用 -->
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
 <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-<!-- <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.js"></script> -->
-
 <!-- Layer组件引用 -->
 <script src="plug-in/layer/layer.js"></script>
-
 <!-- 通用组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/default.css" rel="stylesheet" />
 <script src="js/bootstrap-curdtools.js"></script>
@@ -78,7 +69,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 检索 </a>
         </div>
         <div class="table-responsive">
-            <!-- class="text-nowrap" 强制不换行 -->
          	<table id="userInfo"></table>
         </div>
     </div>

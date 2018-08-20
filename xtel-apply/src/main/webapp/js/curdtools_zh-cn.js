@@ -63,8 +63,7 @@ function upload(curform) {
  * @param title 编辑框标题
  * @param addurl//目标页面地址
  */
-function add(title,addurl,gname,width,height) {
-	gridname=gname;
+function add(title,addurl,width,height) {
 	createwindow(title, addurl,width,height);
 }
 /**
@@ -72,11 +71,10 @@ function add(title,addurl,gname,width,height) {
  * @param title 编辑框标题
  * @param addurl//目标页面地址
  */
-function addTreeNode(title,addurl,gname) {
+function addTreeNode(title,addurl) {
 	if (rowid != '') {
 		addurl += '&id='+rowid;
 	}
-	gridname=gname;
 	createwindow(title, addurl);
 }
 /**
@@ -148,8 +146,7 @@ function detail(title,url, id,width,height) {
  * @param gname
  * @return
  */
-function deleteALLSelect(title,url,gname) {
-	gridname=gname;
+function deleteALLSelect(title,url) {
     var ids = [];
     var rows = $("#"+gname).datagrid('getSelections');
     if (rows.length > 0) {
@@ -240,7 +237,6 @@ function createdetailwindow(title, addurl,width,height) {
  * @param id//主键字段
  */
 function editfs(title,url) {
-	var name=gridname;
 	 if (rowid == '') {
 		tip('请选择编辑项目');
 		return;
@@ -253,8 +249,7 @@ function editfs(title,url) {
 
 }
 // 删除调用函数
-function delObj(url,name) {
-	gridname=name;
+function delObj(url) {
 	createdialog('删除确认 ', '确定删除该记录吗 ?', url,name);
 }
 // 删除调用函数
@@ -330,7 +325,7 @@ function tip(msg) {
 				offset:'rb',
 				content:msg,
 				time:3000,
-				btn:false,
+				btn:true,
 				shade:false,
 				icon:icon,
 				shift:2
@@ -461,7 +456,6 @@ function createwindow(title, addurl,width,height) {
  * @param saveurl
  */
 function openuploadwin(title, url,name,width, height) {
-	gridname=name;
 	$.dialog({
 	    content: 'url:'+url,
 		zIndex: getzIndex(),
@@ -525,14 +519,13 @@ function opensearchdwin(title, url, width, height) {
  * @param addurl
  * @param saveurl
  */
-function openwindow(title, url,name, width, height) {
+function openwindow(title, url, width, height) {
 
 	if(width=="100%" || height=="100%"){
 		width = window.top.document.body.offsetWidth;
 		height =window.top.document.body.offsetHeight-100;
 	}
 
-	gridname=name;
 	if (typeof (width) == 'undefined'&&typeof (height) != 'undefined')
 	{
 		if(typeof(windowapi) == 'undefined'){
@@ -645,7 +638,7 @@ function openwindow(title, url,name, width, height) {
  * @param noShade 不赋值则有遮罩
  */
 
-function createdialog(title, content, url,name,noShade) {
+function createdialog(title, content, url,noShade) {
 	$.dialog.setting.zIndex = getzIndex(true);
 //	$.dialog.confirm(content, function(){
 //		doSubmit(url,name);
@@ -658,7 +651,7 @@ function createdialog(title, content, url,name,noShade) {
 	if( navigator.appName == navigatorName ||"default,shortcut".indexOf(getCookie("JEECGINDEXSTYLE"))>=0){ 
 
 		$.dialog.confirm(content, function(){
-			doSubmit(url,name);
+			doSubmit(url);
 			rowid = '';
 		}, function(){
 		});
@@ -726,8 +719,7 @@ function search() {
  * @param url
  * @param index
  */
-function doSubmit(url,name,data) {
-	gridname=name;
+function doSubmit(url,data) {
 	//--author：JueYue ---------date：20140227---------for：把URL转换成POST参数防止URL参数超出范围的问题
 	var paramsData = data;
 	if(!paramsData){
@@ -751,13 +743,15 @@ function doSubmit(url,name,data) {
 		error : function() {// 请求失败处理函数
 		},
 		success : function(data) {
-			var d = $.parseJSON(data);
-			if (d.success) {
-				var msg = d.msg;
+			//var d = $.parseJSON(data);
+			console.log(data.code);
+			if (data.code=="1") {
+	
+				var msg = data.message;
 				tip(msg);
 				reloadTable();
 			} else {
-				tip(d.msg);
+				tip(data.msg);
 			}
 		}
 	});
@@ -898,13 +892,13 @@ function setCookie(c_name, value, expiredays){
 	document.cookie=c_name+ "=" + escape(value) + ((expiredays==null) ? "" : ";expires="+exdate.toGMTString());
 }
 
-function createTabId(str){
-　　　　var val="";
-　　　　for(var i = 0; i < str.length; i++){
-　　　　　　　　val += str.charCodeAt(i).toString(16);
-　　　　}
-　　　　return val;
-　　}
+//function createTabId(str){
+//　　　　var val="";
+//　　　　for(var i = 0; i < str.length; i++){
+//　　　　　　　　val += str.charCodeAt(i).toString(16);
+//　　　　}
+//　　　　return val;
+//　　}
 // 添加标签
 function addOneTab(subtitle, url, icon) {
 	var indexStyle = getCookie("JEECGINDEXSTYLE");

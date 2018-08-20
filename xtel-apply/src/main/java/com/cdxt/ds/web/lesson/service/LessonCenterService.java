@@ -1,10 +1,12 @@
 package com.cdxt.ds.web.lesson.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.cdxt.ds.core.model.PagePojo;
+import com.cdxt.ds.core.model.ResJson;
 import com.cdxt.ds.web.lesson.pojo.CourseInfo;
-import com.cdxt.ds.web.lesson.pojo.CourseInfoBean;
+import com.cdxt.ds.web.lesson.pojo.CoursePlan;
 
 public interface LessonCenterService {
 
@@ -18,15 +20,15 @@ public interface LessonCenterService {
 
 	Map<String, Object> getCourseInfoByid(int cpurseID);
 	
-	void insertSignup(Map<String, Object> map);
+	ResJson insertSignup(Integer courseId,Integer userId);
 
 	void deleteClassInfo(int cpurseID);
 	
-	void insertCourseInfo(CourseInfoBean courseInfoBean);
+	void insertCourseInfo(CourseInfo courseInfo,String divArray);
 	
 	CourseInfo getCourseInfobyCpurseID(int cpurseID);
 		
-	void insertCourseArrangement(Map<String, Object> map);
+	void batchInsertCoursePlan(List<CoursePlan>list);
 		
 	Map<String, Object>  getArrangeByid(int id);
 	

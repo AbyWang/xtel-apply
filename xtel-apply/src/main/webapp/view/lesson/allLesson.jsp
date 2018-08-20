@@ -12,24 +12,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>所有课程</title>
 <!-- Jquery组件引用 -->
 <script src="plug-in/jquery/jquery-1.9.1.js"></script>
-<!-- <script src="https://cdn.bootcss.com/jquery/1.12.3/jquery.min.js"></script> -->
 <!-- bootstrap组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
-<!-- <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
 
 <!-- bootstrap table组件以及中文包的引用 -->
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
 <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-<!-- <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.js"></script> -->
-
-<!-- Layer组件引用 -->
-<script src="plug-in/layer/layer.js"></script>
-
+<link href="plug-in/lhgDialog/skins/metro.css" rel="stylesheet" />
+<link href="plug-in/layui/css/layui.css" rel="stylesheet">
 <!-- 通用组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/default.css" rel="stylesheet" />
 <script src="js/bootstrap-curdtools.js"></script>
@@ -65,17 +57,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 		</div>
         <div id="toolbar">
-            <button id="btn_add" type="button" class="btn btn-primary btn-sm" onclick="add('新增','','jeecgDemoList',600,400)">
-                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-            </button>
-            <button id="btn_edit" type="button" class="btn btn-success btn-sm" onclick="update('修改','','jeecgDemoList',600,400)">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-            </button>
-            <button id="btn_delete" type="button" class="btn btn-danger btn-sm"  onclick="deleteALLSelect('批量删除','','jeecgDemoList',600,400)">
-                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>批量删除
-            </button>
-            <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapse_search" id="btn_collapse_search" >
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 检索 </a>
+             <a class="btn btn-default btn-sm" data-toggle="collapse" href="#collapse_search" id="btn_collapse_search" >
+			<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 检索 </a>
         </div>
         <div class="table-responsive">
             <!-- class="text-nowrap" 强制不换行 -->
@@ -83,15 +66,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
     </div>
 <script src="js/common.js"></script>
+<script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js?skin=jtop"></script>  
+<script type="text/javascript" src="js/curdtools_zh-cn.js"></script>
+<script type="text/javascript" src="plug-in/layui/layui.js"></script>  
 <script type="text/javascript">
 var path = "<%=path%>";
 $(function () {
-	var defaultColunms = listAllLesson.initColumn();
-    var table = new BSTable("listAllLesson",path+ "/lessonCenterController/listAllLesson", defaultColunms);
-    table.init();
+	loadTable();
 });
 	
+	function loadTable(flag){
 
+	  var defaultColunms = listAllLesson.initColumn();
+      var table = new BSTable("listAllLesson",path+ "/lessonCenterController/listAllLesson", defaultColunms);
+      table.init();
+      if(flag==1){
+          table.refresh();
+      }	
+	}
+	
+var data=[];
 listAllLesson.initColumn= function () {
     return [
         {title: '编号',field: 'COURSEID', align: 'center', valign: 'middle',width:'50px'},
@@ -126,8 +120,61 @@ listAllLesson.initColumn= function () {
         {title: '更新时间',field: 'LASTCLASSTIME', align: 'center', valign: 'middle',width:'50px'},
         {title: '操作', align: 'center', valign: 'middle',width:'50px', formatter: 
        		        	function (value, row, index) {
-       		            return "<button class='btn btn-xs btn-info' onclick='lookteaching()'><i class=' icon-zoom-in bigger-180'></i>课程报名</button>&nbsp;";    
-       		        }}]  };
+        	            data[index]=row;
+       		            return [
+                          "<button class='btn btn-xs btn-info' onclick=register('"+index+"')><i class=' icon-zoom-in bigger-180'></i>报名</button>&nbsp;",
+       		              "<button class='btn btn-xs btn-info' onclick=signUp('"+index+"')><i class=' icon-zoom-in bigger-180'></i>详细</button>&nbsp;" 
+       		             ].join('');   
+        }}] };      
+      //详细
+     function signUp(index){
+            var courseId=data[index].COURSEID;
+            var name=data[index].NAME;
+            layui.use('layer', function(){
+                var layer = layui.layer;
+                layer.open({
+                       type: 2, 
+                       title:name,
+                       area: ['700px', '500px'],
+                       content: 'lessonCenterController/getoRegister?courseId='+courseId ,
+                       end:function(){
+                       }
+                     });
+                })
+         //   createdetailwindow(name, "lessonCenterController/getoRegister?courseId="+courseId,"780px","480px");
+     } 
+         //报名
+      function register(index){
+             var courseId=data[index].COURSEID;
+             var name=data[index].NAME;
+             layui.use('layer', function(){
+             var layer = layui.layer;
+
+             layer.confirm('是否报名?', {icon: 1,btn: ['报名','取消'],title:'课程报名'}, function(index){
+             layer.close(index);
+             $.ajax({
+                 type : 'POST',
+                 url : "lessonCenterController/insertSignup",// 请求的action路径
+                 data : {courseId:courseId},
+                 success : function(data) {
+                     layer.msg(data.message, {
+                         icon: data.code,
+                         //2秒关闭（如果不配置，默认是3秒）
+                         time: 2000 
+                       }, function(){
+                         if(data.code=="1"){
+                             loadTable(1);
+                         }
+                 });
+                   
+              }
+             });
+          });
+ 
+       });
+         // createdialog(name,"确认报名?","lessonCenterController/insertSignup?courseId="+courseId);
+      }
+
 </script>
 </body>
 </html>

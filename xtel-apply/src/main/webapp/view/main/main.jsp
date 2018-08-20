@@ -1,8 +1,13 @@
+<%@page import="com.cdxt.ds.web.sys.pojo.UserInfo"%>
 <%@ page language="java" import="java.util.*" pageEncoding="gbk"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+UserInfo user=(UserInfo)session.getAttribute("userInfo");
+Integer userId=user.getUserID();
+String userName=user.getUserName();
+session.setAttribute("userId", userId);
 %>
 
 
@@ -10,8 +15,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html lang="en">
 <head>
 
-    <base href="<%=basePath%>">
-<title>首页</title>
+<base href="<%=basePath%>">
+<title>远程教学系统</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
@@ -59,7 +64,8 @@ var path = "<%=path%>";
 					<li class="light-blue"><a data-toggle="dropdown" href="#"
 						class="dropdown-toggle">
 						 <img class="nav-user-photo"  src="plug-in/ace/assets/avatars/user.jpg" />
-						  <span class="user-info"> <small>欢迎光临,</small>
+						  <span class="user-info"> <small>你好,</small>
+						 <span ><%=userName%></span>
 						  </span>
 						 <i class="icon-caret-down"></i>
 					</a>
@@ -249,7 +255,7 @@ var path = "<%=path%>";
 	            btn: ['确定','取消'], //按钮
 	            shade: false //不显示遮罩
 	        }, function(){
-	            location.href="<%=path%>/user/logout";
+	            location.href="<%=path%>/logout";
 	        }, function(){
 	            return;
 	        });

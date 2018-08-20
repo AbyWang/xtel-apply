@@ -3,23 +3,46 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdxt.ds.web.lesson.dao.LessonCenterDao">
 
-<!-- 查询已报名信息课程 -->
+ <resultMap type="com.cdxt.ds.web.lesson.pojo.CourseInfo"  id="courseDetailInfo" >  
+ <id column="courseID" property="courseID"/>
+ <result column="price" property="price"/>
+ <result column="name" property="name"/>
+ <result column="totalclass" property="totalClass"/>
+ <result column="type" property="type"/>
+ <result column="brief" property="brief"/>
+ <collection property="coursePlan" ofType="com.cdxt.ds.web.lesson.pojo.CoursePlan">
+            <id column="id" property="id"/>
+            <result column="classnumber" property="classNumber"/>
+            <result column="time" property="time"/>
+  </collection>
+ </resultMap>
+
+
+<!-- 查询课程信息单一记录 -->
+<select id="getCourseInfobyCpurseID" parameterType="int" resultMap="courseDetailInfo">
+
+select a.courseID,a.price,a.name,a.totalclass,a.type,a.brief,b.id,
+ b.classnumber,b.time from  XTEL_COURSEINFO a left join XTEL_CourseArrangement b
+ on a.courseID=b.courseID where a.COURSEID=#{cpurseID}
+</select>
+
+
+<!-- 查询已报名信息课程
 <select id="getSignupListbyuserId" parameterType="int" resultType="int">
 
 select COURSEID from XTEL_SignupList WHERE USERID=#{userID}
-</select>
+</select> -->
 
 
 
 <!-- 通过登录名查询XTEL_COURSEINFO -->
-<select id="listAllLesson"  resultType="map" parameterType="java.util.List">
-	   	select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,
- 	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID 
- 	from XTEL_COURSEINFO a inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
- 	where  a.STATUS=2 and a.COURSEID not in 
- 	  <foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
-            #{item}  
-        </foreach>
+<select id="listAllLesson"  resultType="map" parameterType="Integer">
+            select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,
+    a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID 
+    from XTEL_COURSEINFO a left join   XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
+    where  a.STATUS=2 and x.userid!=#{userId} and 
+    <!-- 剔除掉已报名的和自己的课程 -->
+   not exists ( select p.courseid from XTEL_SignupList p where a.courseid=p.courseid)
 </select>
 
 <!-- 根据id查看课程的信息 -->
@@ -34,8 +57,8 @@ select COURSEID from XTEL_SignupList WHERE USERID=#{userID}
 </select>
 <!-- 新增培训报名信息 -->
 <insert id="insertSignup" parameterType="map">
-insert into  XTEL_SignupList(ID,USERID,COURSEID,TIME) 
-VALUES(SIGNUP_SQ.NEXTVAL,#{userid},#{CpurseID},#{time})
+insert into  XTEL_SignupList(ID,USERID,COURSEID,TIME,STATUS) 
+VALUES(SIGNUP_SQ.NEXTVAL,#{userId},#{courseId},#{time},0)
 </insert>
 <!-- 修改课程表的出售数量 -->
 <update id="updateSignupSold"  parameterType="map">
@@ -43,12 +66,6 @@ VALUES(SIGNUP_SQ.NEXTVAL,#{userid},#{CpurseID},#{time})
 update XTEL_COURSEINFO set SOLD=SOLD+1 where COURSEID=#{CpurseID}
 
 </update>
-
-<!-- 查询课程信息单一记录 -->
-<select id="getCourseInfobyCpurseID" parameterType="int" resultType="CourseInfo">
-
-select a.STATUS "status" from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
-</select>
 
 <!-- 删除课程信息记录 -->
 <delete id="deleteClassInfo" parameterType="int">
@@ -66,8 +83,11 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
  	
 </select>
 <!-- 新增课程信息 -->
-<insert id="insertCourseInfo" parameterType="courseInfoBean">
+<insert id="insertCourseInfo" parameterType="courseInfo">
 
+    <selectKey keyProperty="courseID" resultType="Integer" order="BEFORE">  
+            select COURSEINFO_SQ.NEXTVAL from dual  
+    </selectKey>
 		INSERT INTO XTEL_COURSEINFO
 		(
 		COURSEID,
@@ -79,25 +99,19 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
 		TYPE,
 		SOLD,
 		PASS,
-		LASTCLASSTIME,
-		REVIEWERID,
-		BRIEF,
-		NUMBEROFEXPECTED
+		BRIEF
 		) 
 		VALUES(
-		COURSEINFO_SQ.NEXTVAL,
-		#{LecturerID},
-		#{className},
-		#{satus},
-		#{classTime},
-		#{classPrice},
-		#{classtype},
-		#{Sold},
-		#{Pass},
-		#{LastClassTime},
-		#{ReviewerID},
-		#{classinfo},
-		#{calssNumber}
+		#{courseID},
+        #{lecturerID},
+		#{name},
+		#{status},
+		#{totalClass},
+		#{price},
+		#{type},
+		#{sold},
+		#{pass},
+		#{brief}
 		)
 </insert>
 <!-- 已报名课程信息 -->
@@ -109,10 +123,20 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
  	where c.USERID=#{userID}
 </select>
 <!-- 添加我的排课记录 -->
-<insert id="insertCourseArrangement" parameterType="map">
-insert into XTEL_CourseArrangement(ID,COURSEID,TIME,LECTUREID,STATUS)
-     values(COURSEARRANGEMENT_SQ.NEXTVAL,#{CpurseID},#{dateTime},#{userID},0) 
-
+<insert id="batchInsertCoursePlan" parameterType="java.util.List" >
+ <selectKey resultType="Integer" keyProperty="id" order="BEFORE"> 
+             SELECT COURSEARRANGEMENT_SQ.NEXTVAL FROM dual
+  </selectKey> 
+ INSERT INTO XTEL_CourseArrangement(ID, COURSEID,TIME,CLASSNUMBER)
+         SELECT COURSEARRANGEMENT_SQ.NEXTVAL, m.* FROM(
+         <foreach collection="list"  index="index" item="coursePlan"  separator="union all">
+          select
+             #{coursePlan.courseID} as COURSEID,
+             #{coursePlan.time} as TIME,
+             #{coursePlan.classNumber} as CLASSNUMBER
+           from dual
+         </foreach>
+         )m
 </insert>
 <!-- 查询我的课程安排信息 -->
 <select id="listCourseArrangeInfoPage" parameterType="int" resultType="map">

@@ -5,7 +5,7 @@ var layerUI = {
    options:{},
    init:function(){
 	   layui.use(['layer','element'], function(){
-		   layerUI.element = layui.element();
+		   layerUI.element = layui.element;
 		   layerUI.layer = layui.layer;
 	   });  
    },

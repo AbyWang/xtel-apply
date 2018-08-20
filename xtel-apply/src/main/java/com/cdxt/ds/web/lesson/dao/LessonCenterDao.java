@@ -3,26 +3,28 @@ package com.cdxt.ds.web.lesson.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.cdxt.ds.web.lesson.pojo.CourseInfo;
-import com.cdxt.ds.web.lesson.pojo.CourseInfoBean;
+import com.cdxt.ds.web.lesson.pojo.CoursePlan;
 
 public interface LessonCenterDao {
 
 
-	List<Integer>getSignupListbyuserId(Integer userID);
+	//List<Integer>getSignupListbyuserId(Integer userID);
 	
 	
-	List<Map<String, Object>> listAllLesson(List<Integer>list);
+	List<Map<String, Object>> listAllLesson(int userId);
 
 	Map<String, Object> getCourseInfoByid(int cpurseID);
 	
-	void insertSignup(Map<String, Object> map);
+	int insertSignup(@Param("userId")Integer userId,@Param("courseId")Integer courseId,@Param("time")Long time);
 	
 	void updateSignupSold(Map<String, Object> map);
 
 	void deleteClassInfo(int cpurseID);
 	
-	void insertCourseInfo(CourseInfoBean courseInfoBean);
+	int insertCourseInfo(CourseInfo courseInfo);
 	
 	List<Map<String, Object>>  listMyLessonPage(int userID);
 	
@@ -30,7 +32,7 @@ public interface LessonCenterDao {
 	
 	List<Map<String, Object>>  listRegisteredLessonPage(int userID);
 	
-	void insertCourseArrangement(Map<String, Object> map);
+	void batchInsertCoursePlan(List<CoursePlan>list);
 	
 	List<Map<String, Object>>  listCourseArrangeInfoPage(int userID);
 	

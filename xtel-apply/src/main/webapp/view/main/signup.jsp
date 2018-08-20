@@ -1,70 +1,96 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%> 
 <% 
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path;
 %>
 <%response.setHeader("Pragma","No-cache");  response.setHeader("Cache-Control","no-cache");  response.setDateHeader("Expires", 0);  response.flushBuffer();%> 
 <!DOCTYPE html>
-<html>
-<head>
-<title>注册</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Internship Sign In & Sign Up Form Responsive Widget,Login form widgets, Sign up Web forms , Login signup Responsive web form,Flat Pricing table,Flat Drop downs,Registration Forms,News letter Forms,Elements" />
-<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-<!-- Custom Theme files -->
-<link rel="stylesheet" href="<%=path%>/plug-in/ace/css/bootstrap.css" />
-<link href="plug-in/sweet-alert/css/sweetalert2.css" rel="stylesheet" type="text/css" media="all">
-<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all">
-<link href="css/snow.css" rel="stylesheet" type="text/css" media="all" />
-<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>信通远程教学平台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Free HTML5 Template by FreeHTML5.co" />
+	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
+	
 
-</head>
-<body>
-<div class="snow-container">
-			  <div class="snow foreground"></div>
-			  <div class="snow foreground layered"></div>
-			  <div class="snow middleground"></div>
-			  <div class="snow middleground layered"></div>
-			  <div class="snow background"></div>
-			  <div class="snow background layered"></div>
-			</div>
+	<meta property="og:title" content=""/>
+	<meta property="og:image" content=""/>
+	<meta property="og:url" content=""/>
+	<meta property="og:site_name" content=""/>
+	<meta property="og:description" content=""/>
+	<meta name="twitter:title" content="" />
+	<meta name="twitter:image" content="" />
+	<meta name="twitter:url" content="" />
+	<meta name="twitter:card" content="" />
 
-<div class="top-buttons-agileinfo">
-<a href="<%=path%>/toLogin">登录</a><a href="<%=path%>/toSignUp" class="active">注册</a>
-</div>
-<h1>远程教学系统</h1>
-<div class="main-agileits">
-<!--form-stars-here-->
-		<div class="form-w3-agile">
-			<h2 class="sub-agileits-w3layouts">注册</h2>
-			<form id="signupForm" method="post"  role="form"   action="<%=path%>/register">
-					<input type="text"  id="userName" name="userName"   placeholder="用户名" required="" />
-					<input type="password" id="password" name="password" placeholder="密码" required="" />
-					<input type="password" id="confirm" name="password" placeholder="确认密码" required="" />
-					<div role="alert" id="errMsgContiner">
-		            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			          <div id="showErrMsg" style="color:red"></div>
-		             </div>
-				   <div class="submit-w3l">
-			 		<input type="button"   id="but_login" onclick="signup()" value="注册">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href='css/googleapis.css' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="plug-in/bootstrap3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style1.css">
+    <link href="plug-in/sweet-alert/css/sweetalert2.css" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="plug-in/select2/css/select2.min.css">
+	</head>
+	<body>
+		<div class="container">
+				<h2>信通远程教学平台</h2>
+      			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+				<form  class="fh5co-form animate-box" data-animate-effect="fadeIn"  id="signupForm" method="post"  role="form"   action="<%=path%>/register">
+				       <div class="form-group">
+                        <select id="groupId" name="groupId" class="form-control" placeholder="群组">   
+                            <option value=''>---请选择---</option>   
+                            <c:forEach var="item" items="${group}">   
+                            <option value='${item.ID}'>  
+                             ${item.NAME}  
+                             </option>   
+                            </c:forEach>   
+                         </select>  
+                        </div>
+						<div class="form-group">
+							<label for="username" class="sr-only">Username</label>
+							<input type="text" class="form-control"  id="userName"  name="userName" placeholder="Username" autocomplete="off">
+						</div>
+						<div class="form-group">
+							<label for="password" class="sr-only">Password</label>
+							<input type="password" class="form-control" id="password" name="password"  placeholder="Password" autocomplete="off">
+						</div>
+						  <div class="form-group">
+						  <label for="password" class="sr-only">Confirm</label>
+                          <input type="password" class="form-control" id="confirm" name="confirm" placeholder="confirm" autocomplete="off" />
+                         </div>
+
+						<div class="form-group">
+						     <a href="<%=path%>/toLogin">已经注册?登录</a>
+							<input type="button" id="but_login"  value="注册"   onclick="signup()" class="btn btn-primary btn-lg">
+						</div>
+						    <div role="alert" class="form-group" id="errMsgContiner">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   <div id="showErrMsg" style="color:red"></div>
+                              </div>
+					</form>
 				</div>
-			</form>
+			</div>
 		</div>
-		</div>
-<script type="text/javascript" src="<%=path%>/plug-in/jquery/jquery-1.9.1.js"></script>
-<script type="text/javascript" src="<%=path%>/plug-in/jquery/jquery.cookie.js"></script>
-<script type="text/javascript" src="<%=path%>/plug-in/sweet-alert/dist/sweetalert2.js"></script>
+	
+	<script src="plug-in/jquery/jquery-1.9.1.js"></script>
+	<!-- Bootstrap -->
+	<script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="plug-in/sweet-alert/js/sweetalert2.js"></script>
+     <script type="text/javascript" src="plug-in/select2/js/select2.min.js"></script>
+
 <script>
 $(function(){
-	
-	optErrMsg();
-	
+    
+    optErrMsg();
+    
 });
 $("#errMsgContiner").hide();
 function optErrMsg(){
-	$("#showErrMsg").html('');
-	$("#errMsgContiner").hide();
+    $("#showErrMsg").html('');
+    $("#errMsgContiner").hide();
 }
 
 //验证用户信息
@@ -76,7 +102,7 @@ function signup(){
 }
 
 //登录提示消息显示
-function showErrorMsg(msg){	
+function showErrorMsg(msg){ 
   $("#errMsgContiner").show();
   $("#showErrMsg").html(msg);    
   window.setTimeout(optErrMsg,5000); 
@@ -88,35 +114,41 @@ function register() {
     var data=$(":input").each(function() {
       formData[this.name] =$("#"+this.name ).val();
     });
+   // $.extend(formData,{"groupId":$("#group").val()});
+    console.log(formData);
     $.ajax({
       async : false,
       cache : false,
       type : 'POST',
       url : actionurl,// 请求的action路径
-      data : formData,
+      data: formData,
       success : function(data) {
-    	  console.log(data);
         if (data.code==1) {
-        	swal({
-        		  title: '注册成功！',
-        		  type: 'success',
-        		  showCancelButton: false,
-        		  confirmButtonColor: '#3085d6',
-        		  confirmButtonText: '确认'
-        		}).then(function(isConfirm) {
-        		  if (isConfirm) {
-        			  window.location.href ="<%=path%>/toLogin";
-        		  }
-        		})
-        	
+            swal({
+                  title: '注册成功！',
+                  type: 'success',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: '确认'
+                }).then(function(isConfirm) {
+                  if (isConfirm) {
+                      window.location.href ="<%=path%>/toLogin";
+                  }
+                })
+            
         }else{
-     		showErrorMsg(data.message);
+            showErrorMsg(data.message);
         }
       }
     });
 }
 //表单验证
 function validForm(){
+	
+  if($.trim($("#groupId").val()).length==0){
+	      showErrorMsg("请选择群组");
+	      return false;
+    }
   if($.trim($("#userName").val()).length==0){
     showErrorMsg("请输入用户名");
     return false;
@@ -127,11 +159,12 @@ function validForm(){
     showErrorMsg("请输入密码");
     return false;
   }
-  if(password!=confirm){
-	  showErrorMsg("两次密码不一致，请确认");
-	  return false;
-  }
 
+  if(password!=confirm){
+      showErrorMsg("两次密码不一致，请确认");
+      return false;
+  }
+  
 
   
   return true;
@@ -139,12 +172,12 @@ function validForm(){
 
 //输入验证码，回车登录
 $(document).keydown(function(e){
-	if(e.keyCode == 13) {
-		$("#but_login").click();
-	}
+    if(e.keyCode == 13) {
+        $("#but_login").click();
+    }
 });
 
-
 </script>
-</body>
+	</body>
 </html>
+

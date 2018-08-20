@@ -1,21 +1,23 @@
 package com.cdxt.ds.web.lesson.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cdxt.ds.core.constant.SysConstants;
 import com.cdxt.ds.core.model.PagePojo;
-import com.cdxt.ds.web.lesson.pojo.CourseInfoBean;
+import com.cdxt.ds.core.model.ResJson;
+import com.cdxt.ds.web.lesson.pojo.CourseInfo;
 import com.cdxt.ds.web.lesson.service.LessonCenterService;
 import com.cdxt.ds.web.sys.pojo.UserInfo;
 
@@ -46,6 +48,42 @@ public class LessonCenterController {
 		return lessonCenterService.listAllLesson(userID,pageNo,pageSize);
 	}
 
+	/**
+	 * 
+	 * @Title: getoSignUp
+	 * @author wangxiaolong
+	 * @Description:报名跳转
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/getoRegister")
+	public String getoRegister(HttpServletRequest request,@Param(value="courseId")Integer courseId){
+		CourseInfo courseInfo=lessonCenterService.getCourseInfobyCpurseID(courseId);
+		request.setAttribute("courseInfo", courseInfo);
+		return "lesson/register";
+	}
+
+	
+	
+	@RequestMapping("/addApply")
+	public String addOrUpdateApply(HttpServletRequest request){
+
+		return "lesson/addApply";
+	}
+
+	
+	@RequestMapping("/updateApply")
+	public String updateApply(HttpServletRequest request){
+		String courseId=request.getParameter("courseId");
+		if(StringUtils.isNotBlank(courseId)){
+			Integer id= Integer.valueOf(courseId);
+			CourseInfo courseInfo=lessonCenterService.getCourseInfobyCpurseID(id);
+			request.setAttribute("courseInfo", courseInfo);
+		}
+		return "lesson/updateApply";
+	}
+
+	
 	/**
 	 * 
 	 * @Title: getmycuriculumPage
@@ -83,6 +121,9 @@ public class LessonCenterController {
 
 	}	
 
+
+
+
 	/**
 	 * 
 	 * @Title: listCourseArrangeInfoPage
@@ -102,39 +143,20 @@ public class LessonCenterController {
 	}	
 
 	/**
-	 * @描述:添加报名培训信息
-	 * @方法名: updateTeachingStatus
-	 * @param teachingID
+	 * 
+	 * @Title: insertSignup
+	 * @author wangxiaolong
+	 * @Description:课程报名
+	 * @param
 	 * @return
-	 * @
-	 * @返回类型 Map<String,Object>
-	 * @创建人 张兴成
-	 * @创建时间 2018年4月26日下午3:38:54
-	 * @修改人 张兴成
-	 * @修改时间 2018年4月26日下午3:38:54
-	 * @修改备注
-	 * @since
-	 * @throws
 	 */
 	@RequestMapping("/insertSignup")
 	@ResponseBody
-	public Map<String,Object> insertSignup(@RequestParam("CpurseID")int CpurseID,@RequestParam("userid")int userid){
-		Map<String, Object> result =new HashMap<String, Object>();
-		Map<String, Object> map =new HashMap<String, Object>();
-		try {
-			map.put("CpurseID", CpurseID);
-			map.put("userid", userid);
-			map.put("time", new Date().getTime());
-			lessonCenterService.insertSignup(map);
-			result.put("flag", true);
-			result.put("massge", "报名成功");
-			return result;
-		} catch (Exception e) {
-			result.put("flag", false);
-			result.put("massgefalse", "报名失败");
-			return result;
-		}
+	public ResJson insertSignup(HttpServletRequest request,@Param("courseId")int courseId){
+		HttpSession session=request.getSession();
+		UserInfo user = (UserInfo)session.getAttribute("userInfo");
 
+		return 	lessonCenterService.insertSignup(courseId,user.getUserID());
 	}
 
 
@@ -258,37 +280,27 @@ public class LessonCenterController {
 	}
 
 	/**
-	 * @描述:新增课程信息
-	 * @方法名: insertCourseInfo
+	 * 
+	 * @Title: insertCourseInfo
+	 * @author wangxiaolong
+	 * @Description:新增课程
+	 * @param
 	 * @return
-	 * @返回类型 Map<String,Object>
-	 * @创建人 张兴成
-	 * @创建时间 2018年5月7日下午3:03:39
-	 * @修改人 张兴成
-	 * @修改时间 2018年5月7日下午3:03:39
-	 * @修改备注
-	 * @since
-	 * @throws
 	 */
 	@RequestMapping("/insertCourseInfo")
 	@ResponseBody
-	public Map<String,Object> insertCourseInfo(@RequestBody CourseInfoBean courseInfoBean,HttpServletRequest  request ){
-		Map<String, Object> result =new HashMap<String, Object>();
+	public ResJson insertCourseInfo(CourseInfo courseInfo,HttpServletRequest  request ){
+		String divArrayStr=request.getParameter("divArrayStr");
 		try {
 			UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
-			courseInfoBean.LecturerID=userinfo.getUserID();
-			lessonCenterService.insertCourseInfo(courseInfoBean);
-			result.put("flag", true);
-			result.put("massge", "发布成功");
-			return result;
+			courseInfo.setLecturerID(userinfo.getUserID());
+
+			lessonCenterService.insertCourseInfo(courseInfo,divArrayStr);
+			return new ResJson(SysConstants.STRING_ONE,"添加成功");
 		} catch (Exception e) {
-			result.put("flag", false);
-			result.put("massgefalse", "发布失败");
-			return result;
+			return new ResJson(SysConstants.STRING_ZERO,"添加失败");
 		}
 	}
-
-
 
 	/**
 	 * @描述:新增我的排课记录
@@ -306,29 +318,29 @@ public class LessonCenterController {
 	 * @since
 	 * @throws
 	 */
-	@RequestMapping("/insertCourseArrangement")
-	@ResponseBody
-	public Map<String,Object> insertCourseArrangement(@RequestParam("CpurseID")int CpurseID,
-			@RequestParam("dateTime")long dateTime,HttpServletRequest request){
-		Map<String, Object> result =new HashMap<String, Object>();
-		Map<String, Object> map =new HashMap<String, Object>();
-		try {
-			UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
-			int userID = userinfo.getUserID();
-			map.put("userID", userID);
-			map.put("CpurseID",CpurseID);
-			map.put("dateTime",dateTime);
-			lessonCenterService.insertCourseArrangement(map);
-			result.put("flag", true);
-			result.put("massge", "发布成功");
-			return result;
-		} catch (Exception e) {
-			result.put("flag", false);
-			result.put("massgefalse", "发布失败");
-			return result;
-		}
-
-	}
+	//	@RequestMapping("/insertCourseArrangement")
+	//	@ResponseBody
+	//	public Map<String,Object> insertCourseArrangement(@RequestParam("CpurseID")int CpurseID,
+	//		@RequestParam("dateTime")long dateTime,HttpServletRequest request){
+	//		Map<String, Object> result =new HashMap<String, Object>();
+	//		Map<String, Object> map =new HashMap<String, Object>();
+	//		try {
+	//			UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
+	//			int userID = userinfo.getUserID();
+	//			map.put("userID", userID);
+	//			map.put("CpurseID",CpurseID);
+	//			map.put("dateTime",dateTime);
+	//			//lessonCenterService.insertCourseArrangement(map);
+	//			result.put("flag", true);
+	//			result.put("massge", "发布成功");
+	//			return result;
+	//		} catch (Exception e) {
+	//			result.put("flag", false);
+	//			result.put("massgefalse", "发布失败");
+	//			return result;
+	//		}
+	//
+	//	}
 
 
 	/**

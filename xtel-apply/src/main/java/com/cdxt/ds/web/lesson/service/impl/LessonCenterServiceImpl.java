@@ -5,31 +5,38 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.cdxt.ds.core.constant.SysConstants;
 import com.cdxt.ds.core.model.PagePojo;
+import com.cdxt.ds.core.model.ResJson;
+import com.cdxt.ds.core.util.DateUtils;
 import com.cdxt.ds.core.util.PageUtil;
 import com.cdxt.ds.web.lesson.dao.LessonCenterDao;
 import com.cdxt.ds.web.lesson.pojo.CourseInfo;
-import com.cdxt.ds.web.lesson.pojo.CourseInfoBean;
+import com.cdxt.ds.web.lesson.pojo.CoursePlan;
 import com.cdxt.ds.web.lesson.service.LessonCenterService;
 import com.github.pagehelper.PageHelper;
 
-@Service
+
+@Transactional
+@Service("lessonCenterService")
 public class LessonCenterServiceImpl implements LessonCenterService {
-	
+
 	@Autowired
 	private LessonCenterDao lessonCenterDao;
 
 	@Override
-	public PagePojo listAllLesson(int userID, Integer pageNo,Integer pageSize)  {
-		List<Integer>  list=new ArrayList<Integer>();
+	public PagePojo listAllLesson(int userId, Integer pageNo,Integer pageSize)  {
+		//List<Integer>  list=new ArrayList<Integer>();
 
-		list=lessonCenterDao.getSignupListbyuserId(userID);
+		//list=lessonCenterDao.getSignupListbyuserId(userId);
 		//分页
 		PageHelper.startPage(pageNo, pageSize);
-		List<Map<String, Object>> mapList=lessonCenterDao.listAllLesson(list);
+		List<Map<String, Object>> mapList=lessonCenterDao.listAllLesson(userId);
 		return PageUtil.Map2PageInfo(mapList);
 	}
 
@@ -56,7 +63,7 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 		return PageUtil.Map2PageInfo(list);
 	}
 
-	
+
 	@Override
 	public PagePojo listCourseArrangeInfoPage(int userID,Integer pageNo, Integer pageSize) {
 		//分页
@@ -64,7 +71,7 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 		List<Map<String, Object>> list= lessonCenterDao.listCourseArrangeInfoPage(userID);
 		return PageUtil.Map2PageInfo(list);
 	}
-	
+
 	@Override
 	public Map<String, Object> getCourseInfoByid(int cpurseID){
 		Map<String, Object> map=lessonCenterDao.getCourseInfoByid(cpurseID);
@@ -72,9 +79,16 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 	}
 
 	@Override
-	public void insertSignup(Map<String, Object> map) {
-		lessonCenterDao.insertSignup(map);
-		lessonCenterDao.updateSignupSold(map);
+	public ResJson insertSignup(Integer courseId,Integer userId) {
+		int result=0;
+		//Map<String, Object> map=new HashMap<String, Object>();
+	
+		result= lessonCenterDao.insertSignup(userId,courseId,new Date().getTime());
+		if(result==1){
+			return new ResJson(SysConstants.STRING_ONE,"保存成功");
+		}
+		return new ResJson(SysConstants.STRING_ZERO,"保存成功");
+		//	lessonCenterDao.updateSignupSold(map);
 
 	}
 
@@ -85,18 +99,33 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 	}
 
 	@Override
-	public void insertCourseInfo(CourseInfoBean courseInfoBean){
-		courseInfoBean.Sold=0;
-		courseInfoBean.Pass=0;
-		courseInfoBean.LastClassTime=new Date().getTime();
-		courseInfoBean.ReviewerID=0;
-		courseInfoBean.satus=1;
-		lessonCenterDao.insertCourseInfo(courseInfoBean);
+	public void insertCourseInfo(CourseInfo courseInfo,String divArrayStr){
 
+		courseInfo.setStatus(SysConstants.INTEGER_ONE);
+		courseInfo.setSold(SysConstants.INTEGER_ZERO);
+		courseInfo.setPass(SysConstants.INTEGER_ZERO);
 
+		lessonCenterDao.insertCourseInfo(courseInfo);
+		if(StringUtils.isNoneBlank(divArrayStr)){
+			List<CoursePlan>list=new ArrayList<CoursePlan>();
+			divArrayStr= divArrayStr.replace("[", "").trim();
+			divArrayStr= divArrayStr.replace("]", "").trim();
+			String[]  divArrays= divArrayStr.split(",");
+			int classNumber=1;
+			for(String planArr:divArrays){
+				CoursePlan coursePlan=new CoursePlan();
+				//排课
+				planArr = planArr.replace("\"", "").trim();
+				coursePlan.setCourseID(courseInfo.getCourseID());
+				coursePlan.setTime(DateUtils.str2Long(planArr));
+				coursePlan.setClassNumber(classNumber);
+				classNumber++;
+				list.add(coursePlan);
+			}
+			lessonCenterDao.batchInsertCoursePlan(list);
+		}
 	}
 
-	
 	/**
 	 * 
 	 * @Title: getCourseInfobyCpurseID
@@ -113,8 +142,8 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 	}
 
 	@Override
-	public void insertCourseArrangement(Map<String, Object> map){
-		lessonCenterDao.insertCourseArrangement(map);
+	public void batchInsertCoursePlan(List<CoursePlan> list){
+		lessonCenterDao.batchInsertCoursePlan(list);
 
 	}
 

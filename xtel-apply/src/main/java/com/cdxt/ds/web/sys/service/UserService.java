@@ -17,5 +17,15 @@ public interface UserService {
 	
 	List<MenuFunction> getUserMenuList(Integer parentId);
 	
-	ResJson  addUser(String name,String password);
+	ResJson  addUser(String name,String password,Integer groupId);
+	
+	/**
+	 * 
+	 * @Title: getAllGroup
+	 * @author wangxiaolong
+	 * @Description:查询所有群组
+	 * @param
+	 * @return
+	 */
+	List<Map<String, Object>> getAllGroup();
 }
