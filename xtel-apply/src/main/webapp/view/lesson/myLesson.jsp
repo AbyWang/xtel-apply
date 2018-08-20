@@ -73,11 +73,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
     <!-- Validform组件引用 -->
      <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
-     <script type="text/javascript" src="<%=path%>/plug-in/sweet-alert/js/sweetalert2.min.js"></script>
-     <script src="js/common.js"></script>    
+      <script src="js/common.js"></script>    
      <script type="text/javascript" src="plug-in/layui/layui.js"></script>  
-     <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js?skin=jtop"></script>  
-     <script type="text/javascript" src="js/curdtools_zh-cn.js"></script>  
+  
 
 <script type="text/javascript">
 var data=[]; 

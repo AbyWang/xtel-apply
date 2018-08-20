@@ -83,7 +83,7 @@ public class CourseInfo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
+	
 	public int getType() {
 		return type;
 	}
