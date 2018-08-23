@@ -4,6 +4,16 @@
 <mapper namespace="com.cdxt.ds.web.lesson.dao.ExamDao">
 
 <!-- 查询已报名信息课程 -->
+<select id="listExerciseList"  parameterType="int" resultType="map">
+SELECT a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
+a.UPLOADTIME,b.NAME,b.TYPE
+
+FROM XTEL_Exercises a where a.UPLOADERID=#{userID}
+
+</select>
+
+
+<!-- 查询已报名信息课程 -->
 <select id="getExaminationPage"  parameterType="int" resultType="map">
 SELECT a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
 a.UPLOADTIME,b.NAME,b.TYPE

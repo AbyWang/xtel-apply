@@ -1,12 +1,10 @@
 package com.cdxt.ds.web.lesson.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.cdxt.ds.core.model.PagePojo;
 import com.cdxt.ds.core.model.ResJson;
 import com.cdxt.ds.web.lesson.pojo.CourseInfo;
-import com.cdxt.ds.web.lesson.pojo.CoursePlan;
 
 public interface LessonCenterService {
 
@@ -26,9 +24,12 @@ public interface LessonCenterService {
 	
 	void insertCourseInfo(CourseInfo courseInfo,String divArray);
 	
+	
 	CourseInfo getCourseInfobyCpurseID(int cpurseID);
 		
-	void batchInsertCoursePlan(List<CoursePlan>list);
+	//void batchInsertCoursePlan(List<CoursePlan>list);
+	
+	//void batchMergeCoursePlan(String divArrayStr);
 		
 	Map<String, Object>  getArrangeByid(int id);
 	

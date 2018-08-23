@@ -49,6 +49,7 @@
 		<!-- <choose> <when test="parentId!=null and parentId!=''"> and x.parent=#{parentId} 
 			</when> <otherwise> and x.parent is null </otherwise> </choose> start with 
 			parent is null connect by prior id=parent order by x.page_order -->
+			order by x.page_order
 	</select>
 
 	<!-- 新增用户,调用存储过程 -->

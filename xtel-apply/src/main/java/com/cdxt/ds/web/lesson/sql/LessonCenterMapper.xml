@@ -17,7 +17,6 @@
   </collection>
  </resultMap>
 
-
 <!-- 查询课程信息单一记录 -->
 <select id="getCourseInfobyCpurseID" parameterType="int" resultMap="courseDetailInfo">
 
@@ -127,7 +126,7 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
  <selectKey resultType="Integer" keyProperty="id" order="BEFORE"> 
              SELECT COURSEARRANGEMENT_SQ.NEXTVAL FROM dual
   </selectKey> 
- INSERT INTO XTEL_CourseArrangement(ID, COURSEID,TIME,CLASSNUMBER)
+   INSERT INTO XTEL_CourseArrangement(ID, COURSEID,TIME,CLASSNUMBER)
          SELECT COURSEARRANGEMENT_SQ.NEXTVAL, m.* FROM(
          <foreach collection="list"  index="index" item="coursePlan"  separator="union all">
           select
@@ -137,6 +136,26 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
            from dual
          </foreach>
          )m
+</insert>
+
+<!-- 添加或更新我的排课记录 -->
+<insert id="batchMergeCoursePlan" parameterType="java.util.List">
+    <selectKey keyProperty="courseID" resultType="Integer" order="BEFORE">  
+            select COURSEINFO_SQ.NEXTVAL from dual  
+    </selectKey>
+    MERGE INTO XTEL_CourseArrangement t
+    USING (
+      <foreach collection="list" item="item" index="index" separator="union" >
+        select #{id} ,#{courseId},#{time},#{classNumber}
+        from dual
+      </foreach>) t1
+    ON (t.id =  t1.id)
+    WHEN MATCHED THEN
+    UPDATE SET t.time = t1.time ,t.status=0 where t1.id
+    WHEN NOT MATCHED THEN
+
+      INSERT(courseID, time, classNumber)
+      VALUES ( t1.courseId, t1.time, t1.classNumber)
 </insert>
 <!-- 查询我的课程安排信息 -->
 <select id="listCourseArrangeInfoPage" parameterType="int" resultType="map">

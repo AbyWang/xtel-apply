@@ -53,7 +53,7 @@ session.setAttribute("userId", userId);
 </style>
 </head>
 
- <body style="overflow-x: hidden;">
+<body style="overflow-x: hidden;">
 <div class="container">
 
 		<div class="row">
@@ -192,12 +192,8 @@ session.setAttribute("userId", userId);
 </form> -->
      <!-- Jquery组件引用 -->
      <script type="text/javascript" src="plug-in/jquery/jquery-1.9.1.js"></script>
-     <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>    
-      <!-- Validform组件引用 -->
+         <!-- Validform组件引用 -->
      <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
-     <script type="text/javascript" src="plug-in/sweet-alert/js/sweetalert2.min.js"></script>    
-     <script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js"></script>  
-     <script type="text/javascript" src="js/curdtools_zh-cn.js"></script>  
      <script type="text/javascript" src="plug-in/layui/layui.js"></script>  
 
 <script type="text/javascript">

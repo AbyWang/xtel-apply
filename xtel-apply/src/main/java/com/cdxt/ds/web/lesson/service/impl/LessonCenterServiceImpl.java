@@ -141,11 +141,11 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 
 	}
 
-	@Override
-	public void batchInsertCoursePlan(List<CoursePlan> list){
-		lessonCenterDao.batchInsertCoursePlan(list);
 
-	}
+//	
+//	public 	void batchMergeCoursePlan（List<CoursePlan>list){
+//		
+//	}
 
 	@Override
 	public Map<String, Object> getArrangeByid(int id){

@@ -85,6 +85,20 @@ public class CommonController {
 
 	/**
 	 * 
+	 * @Title: listExercise
+	 * @author wangxiaolong
+	 * @Description:习题列表
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/gotoExerciseList")
+	public String  listExercise(HttpServletRequest request){
+		
+		return "exam/exercise_list";
+	}
+	
+	/**
+	 * 
 	 * @Title: gotoRegistered
 	 * @author wangxiaolong
 	 * @Description:已报名课程
@@ -96,7 +110,19 @@ public class CommonController {
 		return "lesson/registered";
 	}
 
-
+	/**
+	 * 
+	 * @Title: gotoAddExercise
+	 * @author wangxiaolong
+	 * @Description:新增习题
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/gotoAddExercise")
+	public String gotoAddExercise(){
+		return "exam/addExercise";
+	}
+	
 	/**
 	 * 
 	 * @Title: gotoMyLibraryList

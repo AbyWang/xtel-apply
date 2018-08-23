@@ -8,14 +8,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Properties;  
+import java.util.Properties;
+import java.util.ResourceBundle;
+import java.util.Set;  
 
 public class PropertiesConfig {
 	
 	
 	
 	
+	private static final ResourceBundle bundle = java.util.ResourceBundle.getBundle("sysConfig");
+
     /** 
      * 根据KEY，读取文件对应的值 
      * @param filePath 文件路径，即文件所在包的路径，例如：java/util/config.properties 
@@ -108,9 +113,46 @@ public class PropertiesConfig {
         }    
     }
     
-     
-    
-    
+
+	/**
+	 * 获取配置文件参数
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static final String getConfigByName(String name) {
+		return bundle.getString(name);
+	}
+
+	/**
+	 * 获取配置文件参数
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public static final Map<Object, Object> getConfigMap(String path) {
+		ResourceBundle bundle = ResourceBundle.getBundle(path);
+		Set set = bundle.keySet();
+		return SetToMap(set);
+	}
+
+	
+	/**
+	 * SET转换MAP
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static Map<Object, Object> SetToMap(Set<Object> setobj) {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		for (Iterator iterator = setobj.iterator(); iterator.hasNext();) {
+			Map.Entry<Object, Object> entry = (Map.Entry<Object, Object>) iterator.next();
+			map.put(entry.getKey().toString(), entry.getValue() == null ? "" : entry.getValue().toString().trim());
+		}
+		return map;
+
+	}
+
     
     public static void main(String[] args) {  
         //System.out.println(PropertiesConfig.readData("jdbc.properties", "jdbc.url"));  

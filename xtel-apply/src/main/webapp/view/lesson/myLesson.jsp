@@ -14,7 +14,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <link href="plug-in/bootstrap3.3.5/css/default.css" rel="stylesheet" />
-<link href="plug-in/lhgDialog/skins/metro.css" rel="stylesheet" />
 
 <style>
 
@@ -72,8 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
     <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
     <!-- Validform组件引用 -->
-     <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
-      <script src="js/common.js"></script>    
+     <script src="js/common.js"></script>    
      <script type="text/javascript" src="plug-in/layui/layui.js"></script>  
   
 

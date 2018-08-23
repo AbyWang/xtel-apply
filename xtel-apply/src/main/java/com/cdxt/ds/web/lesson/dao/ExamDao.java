@@ -5,7 +5,9 @@ import java.util.Map;
 
 public interface ExamDao {
 
-
+	List<Map<String, Object>>listExerciseList(Integer userID);
+	
+	
 	List<Map<String, Object>>getExaminationPage(Integer userID);
 	
 	

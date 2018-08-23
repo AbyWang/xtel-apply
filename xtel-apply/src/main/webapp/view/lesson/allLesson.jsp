@@ -20,7 +20,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
 <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
 <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-<link href="plug-in/lhgDialog/skins/metro.css" rel="stylesheet" />
 <link href="plug-in/layui/css/layui.css" rel="stylesheet">
 <!-- 通用组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/default.css" rel="stylesheet" />
@@ -66,9 +65,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
     </div>
 <script src="js/common.js"></script>
-<script type="text/javascript" src="plug-in/lhgDialog/lhgdialog.min.js?skin=jtop"></script>  
-<script type="text/javascript" src="js/curdtools_zh-cn.js"></script>
-<script type="text/javascript" src="plug-in/layui/layui.js"></script>  
 <script type="text/javascript">
 var path = "<%=path%>";
 $(function () {

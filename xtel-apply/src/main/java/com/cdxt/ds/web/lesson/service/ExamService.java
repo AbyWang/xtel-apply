@@ -9,5 +9,13 @@ public interface ExamService {
 	PagePojo getExaminationArrangementPage(int userID, Integer pageNo, Integer pageSize);
 
 	PagePojo getUserPerformancePage(int userID, Integer pageNo, Integer pageSize);
-
+	/**
+	 * 
+	 * @Title: listExerciseList
+	 * @author wangxiaolong
+	 * @Description:试题列表
+	 * @param
+	 * @return
+	 */
+	public PagePojo  listExerciseList (int userID,Integer pageNo, Integer pageSize);
 }

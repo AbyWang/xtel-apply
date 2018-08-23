@@ -20,8 +20,28 @@ public class ExamController {
 	@Autowired
 	private  ExamService  examService;
 
+	
+	/**
+	 * 
+	 * @Title: listExcemPaper
+	 * @author wangxiaolong
+	 * @Description:试题管理
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/listExerciseList")
+	@ResponseBody
+	public PagePojo listExerciseList(HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0")Integer pageNo,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize) throws Exception{
 
-
+		UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
+		int userID = userinfo.getUserID();
+		return examService.listExerciseList(userID,pageNo,pageSize);
+	
+	}
+	 
+	
+	
+	
 	/**
 	 * 
 	 * @Title: listExcemPaper
@@ -32,7 +52,7 @@ public class ExamController {
 	 */
 	@RequestMapping("/listExcemPaper")
 	@ResponseBody
-	public PagePojo listExcemPaper( HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0")Integer pageNo,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize) throws Exception{
+	public PagePojo listExcemPaper(HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0")Integer pageNo,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize) throws Exception{
 		UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
 		int userID = userinfo.getUserID();
 		return examService.getExaminationPage(userID,pageNo,pageSize);
@@ -77,4 +97,5 @@ public class ExamController {
 
 	}
 
+	
 }

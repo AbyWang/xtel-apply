@@ -16,6 +16,14 @@ public class ExamServiceImpl implements ExamService {
 	@Autowired
 	private  ExamDao  examDao;
 
+	
+	public PagePojo  listExerciseList (int userID,Integer pageNo, Integer pageSize){
+		
+		PageHelper.offsetPage(pageNo, pageSize);
+		List<Map<String, Object>> mapList= examDao.listExerciseList(userID);
+		return PageUtil.Map2PageInfo(mapList);
+	
+	}
 	@Override
 	public PagePojo getExaminationPage(int userID,Integer pageNo, Integer pageSize){
 		

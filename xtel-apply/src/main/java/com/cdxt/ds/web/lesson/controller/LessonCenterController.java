@@ -142,6 +142,13 @@ public class LessonCenterController {
 		return lessonCenterService.listCourseArrangeInfoPage(userID,pageNo,pageSize);
 	}	
 
+	@RequestMapping("/updateCoursePlan")
+	@ResponseBody
+	public void updateCoursePlan(HttpServletRequest request,@Param("divArrayStr")String divArrayStr){
+
+
+		// lessonCenterService.updateCoursePlan(divArrayStr);
+	}
 	/**
 	 * 
 	 * @Title: insertSignup
