@@ -29,8 +29,7 @@ text-align:left
 
 <body style="overflow-x: hidden;">
 <div class="container-fluid">
-<form class="form-horizontal ">
-
+<form class="form-horizontal" id="exercises">
         <div class="form-group">
             <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" style="margin-top: 0px;height:18px;padding-top:15px;margin-left:11px;">
                 <span style="font-size: 13px;display: inline-block;">出题人</span>: <label id="dept" style="font-family: MicrosoftYaHei;font-size: 14px;display: inline-block;"><%=userName%></label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -38,21 +37,28 @@ text-align:left
         </div>
 
         <hr style="color:red;margin-top:20px">
-
         <div class="form-group">
                <label class="col-sm-2 control-label">习题类型:</label>
               <div class="col-sm-4">
-               <select  class="form-control"  id="type" onchange="typeChange()">
+               <select  class="form-control"  name="type" id="type" onchange="typeChange()">
                     <option value="">请选择</option>
                     <option value="0">选择题</option>
                     <option value="1">问答题</option>
                    <option value="2">填空题</option>
               </select>
              </div>
-            <div class="form-group hidden" id="optionNum"> 
-               <label class="col-sm-2 control-label">选项个数:</label>
+           <div class="form-group">
+               <label class="col-sm-1 control-label">标签:</label>
+              <div class="col-sm-4">
+               <input type='text' class='form-control' name="brief" id="brief"/>
+               </div>
+            </div>
+        </div>
+
+         <div class="form-group hidden" id="optionNum"> 
+              <label class="col-sm-2 control-label">选项个数:</label>
               <div class="col-sm-2">
-              <select  class="form-control"  id="numberOfOptions" onchange="addOption()">
+              <select  class="form-control" name="numberOfOptions"   id="numberOfOptions" onchange="addOption()">
                     <option value="">请选择</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -62,7 +68,6 @@ text-align:left
               </select>   
           </div>
         </div>
-        </div>
         <div class="form-group"> 
            <label class="col-sm-2 control-label">题目:</label>
            </br> </br>
@@ -70,7 +75,14 @@ text-align:left
            </div>
         </div>
        <div id="option">
+       </div>
       </div>
+      <hr color="#eaeced">
+      <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 0px;text-align: right;margin-bottom: 5px;">
+                <button class="btn btn-success" type="button" id="btnSubmit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" type="button" id="btnClose">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
       </div>
     </form>
     <!-- Jquery组件引用 -->
@@ -82,30 +94,16 @@ text-align:left
 <script type="text/javascript">
   var E = window.wangEditor;
   var editor = new E('#div1');
-  var $ueditorContent = $('#ueditorContent');
-  editor.customConfig.onchange = function (html) {
-    // 监控变化，同步更新到 textarea
-    $ueditorContent.val(html);
-  };
   editor.customConfig.uploadImgServer = 'filedeal?isup=1' ; // 上传图片到服务器，
   editor.customConfig.uploadImgHooks = {
         // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
         customInsert: function (insertImg, result, editor) {
-            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果：
-            var url = result.obj;
+            // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果：;
+            var url = result.data;
             insertImg(url);
         },
       },
   editor.create();
-  // 初始化 textarea 的值,向后台提交textarea中的值
-  $ueditorContent.val(editor.txt.html())
-
- 
-
-    $(function(){
-
-    	
-    })
     
 	//关闭按钮功能实现
 	$("#btnClose").bind('click',function(){
@@ -116,9 +114,45 @@ text-align:left
 	});
 
 
+	   //关闭按钮功能实现
+    $("#btnClose").bind('click',function(){
+        //关闭窗口 lhgdiaglog方法
+        //frameElement.api.close(); 
+       var index = parent.layer.getFrameIndex(window.name);
+       parent.layer.close(index);
+    });
+	   
+	 //提交 
    $("#btnSubmit").bind('click',function(){	
-
-	
+	   var formData=$("#exercises").serializeArray();
+	   console.log(formData);
+	   formData.push({"name":"stem","value":editor.txt.text()});
+	   console.log(formData);
+	   $.ajax({
+		    url: 'examController/addExercise',
+		    data: formData,
+		    beforeSend: function(){
+	              $("#btnSubmit").attr({ disabled: "disabled" });
+	           },
+		    success: function(data) {
+	             layui.use('layer', function(){
+	                  var layer = layui.layer;
+	                  layer.msg(data.message, {
+	                      icon: data.code,
+	                      time: 2000 //2秒关闭（如果不配置，默认是3秒）
+	                    }, function(){
+	                          if(data.code=="1"){
+	                              //调用父窗口方法、刷新页面
+	                          //   frameElement.api.opener.loadTable(1);
+	                              //关闭弹出窗口
+	                          //   frameElement.api.close(); 
+	                              var index = parent.layer.getFrameIndex(window.name);
+	                              parent.layer.close(index);
+	                          }
+	                    });   
+	                });
+		    }
+		});
     });
    
    function typeChange(){
@@ -136,13 +170,11 @@ text-align:left
 	   $("#option").empty();
 	   var num=$("#numberOfOptions").val();
 	   var opHtml="";
-	  for(var i=1;i<=num;i++){
-	          
-	       opHtml+="<div class='form-group' id='option'>"; 
-	         
+	   for(var i=1;i<=num;i++){      
+	       opHtml+="<div class='form-group' >";  
 		   opHtml+="<label class='col-sm-2 control-label'>选项"+i+":</label>";
-		   opHtml+="<div class='col-sm-8'><input type='text' class='form-control' id='numberOfOptions'/></div></div> "; 
-	  }
+		   opHtml+="<div class='col-sm-8'><input type='text' class='form-control' name='option"+i+"' id='option"+i+"'/></div></div> "; 
+	   }
 	  $("#option").append(opHtml);
    }
 </script>

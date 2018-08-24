@@ -1,6 +1,10 @@
 package com.cdxt.ds.web.lesson.service;
 
 import com.cdxt.ds.core.model.PagePojo;
+import com.cdxt.ds.core.model.ResJson;
+import com.cdxt.ds.web.lesson.pojo.ChoiceQuestion;
+import com.cdxt.ds.web.lesson.pojo.EssayQuestion;
+import com.cdxt.ds.web.lesson.pojo.Exercises;
 
 public interface ExamService {
 
@@ -17,5 +21,15 @@ public interface ExamService {
 	 * @param
 	 * @return
 	 */
-	public PagePojo  listExerciseList (int userID,Integer pageNo, Integer pageSize);
+	PagePojo  listExercise(int userID,Integer pageNo, Integer pageSize);
+	
+	/**
+	 * 
+	 * @Title: addExercise
+	 * @author wangxiaolong
+	 * @Description:添加试题
+	 * @param
+	 * @return
+	 */
+	ResJson addExercise(Exercises exercises,ChoiceQuestion choiceQuestion,EssayQuestion essayQuestion);
 }

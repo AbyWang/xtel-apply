@@ -67,7 +67,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> 检索 </a>
         </div>
         <div class="table-responsive">
-            <!-- class="text-nowrap" 强制不换行 -->
          	<table id="listExercise"></table>
         </div>
     </div>
@@ -75,32 +74,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <script type="text/javascript">
 var path = "<%=path%>";
 $(function () {
+	loadTable();
+});
+function loadTable(flag){
 	var defaultColunms = listExercise.initColumn();
     var table = new BSTable("listExercise",path+ "/examController/listExercise", defaultColunms);
     table.init();
-});
-	
-
+    if(flag==1){
+        table.refresh();
+    }
+}
 listExercise.initColumn= function () {
     return [
         {title: '编号',field: 'ID', align: 'center', valign: 'middle',width:'50px'},
-        {title: '试卷名称',field: 'PAPERNAME', align: 'center', valign: 'middle',width:'50px'},
-        {title: '所属课程',field: 'NAME', align: 'center', valign: 'middle',width:'50px'},
-        {title: '课程类型',field: 'TYPE', align: 'center', valign: 'middle',width:'50px',
+        {title: '标签',field: 'BRIEF', align: 'center', valign: 'middle',width:'50px'},
+        {title: '创建时间',field: 'UPLOADTIME', align: 'center', valign: 'middle',width:'50px'},
+        {title: '试题类型',field: 'TYPE', align: 'center', valign: 'middle',width:'50px',
          	formatter: function (value, row, index) {
-                if(value==0){
-                	return "传统直播授课";
-                  }else{
-                	return "智能授课";
-                  }     	  
+               switch(value){
+               case 0:
+                 return "选择题";
+                 break;
+               case 1:
+            	 return "问答题";
+            	 break;
+               case 2:   
+            	 return "填空题";
+            	 break;
+               }  	  
             }},
              {title: '操作', align: 'center', valign: 'middle',width:'50px', formatter: 
        		        	function (value, row, index) {
 	             return [
-                        "<button class='btn btn-xs btn-info' onclick='lookteaching()'><i class=' icon-remove bigger-180'></i>删除试卷</button>&nbsp;",
-                        "<button class='btn btn-xs btn-info' onclick='arrangeExamination()'><i class=' icon-zoom-in bigger-180'></i>安排考试</button>&nbsp;"
-		                   ].join('');       		   
-             }}]  };
+                        "<button class='btn btn-xs btn-info' onclick='lookteaching()'><i class=' icon-remove bigger-180'></i>详细</button>&nbsp;",
+                        "<button class='btn btn-xs btn-info' onclick='arrangeExamination()'><i class=' icon-zoom-in bigger-180'></i>编辑</button>&nbsp;"
+		                 ].join('');       		   
+             }}] };
              
              
     function addExercise(){
@@ -112,12 +121,11 @@ listExercise.initColumn= function () {
                    area: ['800px', '550px'],
                    content: 'gotoAddExercise',
                    end:function(){
-                   }
+                	    loadTable(1);
+                    }
                  });
             })
-    	
-    	
-    }     
+       }     
 </script>
 </body>
 </html>

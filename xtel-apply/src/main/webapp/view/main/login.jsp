@@ -119,8 +119,6 @@ function newLogin() {
         var data=$(":input").each(function() {
           formData[this.name] =$("#"+this.name ).val();
         });
-        console.log(data);
-        console.log(formData);
         $.ajax({
           async : false,
           cache : false,

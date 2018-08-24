@@ -3,13 +3,10 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdxt.ds.web.lesson.dao.ExamDao">
 
-<!-- 查询已报名信息课程 -->
-<select id="listExerciseList"  parameterType="int" resultType="map">
-SELECT a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
-a.UPLOADTIME,b.NAME,b.TYPE
-
-FROM XTEL_Exercises a where a.UPLOADERID=#{userID}
-
+<!-- 查询习题库-->
+<select id="listExercise"  parameterType="int" resultType="map">
+ SELECT a.ID,a.Type,a.UploadTime,a.Brief
+ FROM XTEL_Exercises a where a.UPLOADERID=#{userID}
 </select>
 
 
@@ -40,7 +37,29 @@ where a.USERID=#{userID}
 
 
 </select>
+<!-- 新增选择题 -->
+<insert id="insertChoiceQuestion" parameterType="choiceQuestion">
+  <selectKey keyProperty="id" resultType="Integer" order="BEFORE">  
+            select CHOICEQUESTION_SEQ.NEXTVAL from dual  
+ </selectKey>
+insert into XTEL_EXER_CHOICEQUESTION(ID,Stem,NumberOfOptions,Option1,Option2,Option3,Option4,Option5,Option6) 
+ VALUES(#{id},#{stem},#{numberOfOptions},#{option1,jdbcType=VARCHAR},
+ #{option2,jdbcType=VARCHAR},#{option3,jdbcType=VARCHAR},
+ #{option4,jdbcType=VARCHAR},#{option5,jdbcType=VARCHAR},
+ #{option6,jdbcType=VARCHAR})
+</insert>
 
+<!-- 新增问答题 -->
+<insert id="isertEssayQuestion" parameterType="essayQuestion">
+  <selectKey keyProperty="id" resultType="Integer" order="BEFORE">  
+     select ESSAYQUESTION_SEQ.NEXTVAL from dual  
+ </selectKey>
+     insert into XTEL_Exer_EssayQuestion(ID,Stem) VALUES(#{id},#{stem})
+</insert>
 
-
+<!-- 新增习题 -->
+<insert id="InsertExercises" parameterType="exercises">
+ insert into XTEL_Exercises(ID,UploaderID,Type,RecordID,UploadTime,Brief) 
+ VALUES(EXERCISES_SQ.NEXTVAL,#{uploaderId},#{type},#{recordId},#{uploadTime},#{brief})
+</insert>
 </mapper>

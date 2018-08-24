@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,23 +62,26 @@ public class SystemController {
 					file.mkdirs();// 创建文件根目录
 				}
 				MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-				MultipartFile mf=multipartRequest.getFile("file");// 获取上传文件对象
+				Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
+				for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
+					MultipartFile mf = entity.getValue();// 获取上传文件对象
+					String orgName = mf.getOriginalFilename();// 获取文件名
+					fileName = orgName.substring(0,orgName.lastIndexOf("."))+"_"+System.currentTimeMillis()+orgName.substring(orgName.indexOf("."));
 
-				String orgName = mf.getOriginalFilename();// 获取文件名
-				fileName = orgName.substring(0,orgName.lastIndexOf("."))+"_"+System.currentTimeMillis()+orgName.substring(orgName.indexOf("."));
+					String savePath = file.getPath() + File.separator + fileName;
+					File savefile = new File(savePath);
+					FileCopyUtils.copy(mf.getBytes(), savefile);
+					msg="上传成功";
+					res.setMessage(msg);	
+					String photo_url=PropertiesConfig.getConfigByName("photo_url");//demo中设置为D://upFiles,实际项目应因事制宜
+					String dbpath=photo_url+File.separator+bizPath+File.separator+nowday+File.separator+fileName;
+					logger.debug("---dbpath----"+dbpath);
+					res.setData(dbpath);
 
-				String savePath = file.getPath() + File.separator + fileName;
-				File savefile = new File(savePath);
-				FileCopyUtils.copy(mf.getBytes(), savefile);
-				msg="上传成功";
-				res.setMessage(msg);
-				String dbpath=bizPath+File.separator+nowday+File.separator+fileName;
-				logger.debug("---dbpath----"+dbpath);
-				res.setData(dbpath);
-
-				//1、将文件路径赋值给obj,前台可获取之,随表单提交,然后数据库中存储该路径
-				//2、demo这里用的是AjaxJson对象,开发者可自定义返回对象,但是用t标签的时候路径属性名需为  obj或 filePath 或自己在标签内指定若在标签内指定则action返回路径的名称应保持一致
-				//如果是删除操作
+					//1、将文件路径赋值给obj,前台可获取之,随表单提交,然后数据库中存储该路径
+					//2、demo这里用的是AjaxJson对象,开发者可自定义返回对象,但是用t标签的时候路径属性名需为  obj或 filePath 或自己在标签内指定若在标签内指定则action返回路径的名称应保持一致
+					//如果是删除操作
+				}
 			}else if("1".equals(delFlag)){
 				String path=request.getParameter("path");
 				String delpath=ctxPath+File.separator+path;
@@ -85,7 +89,7 @@ public class SystemController {
 				if (!fileDelete.exists() || !fileDelete.isFile()) {
 					msg="警告: " + delpath + "不存在!";
 					logger.info(msg);
-					res.setCode(SysConstants.STRING_ONE);
+					res.setCode(SysConstants.STRING_ZERO);
 				}else{
 					if(fileDelete.delete()){
 						msg="--------成功删除文件---------"+delpath;
@@ -106,9 +110,11 @@ public class SystemController {
 		}catch (Exception b) {
 			res.setCode(SysConstants.STRING_ZERO);
 			logger.info(b.getMessage());
+			b.printStackTrace();
 		}
 		logger.debug("-----systemController/filedeal.do------------"+msg);
 		res.setMessage(msg);
+		res.setCode(SysConstants.STRING_ONE);
 		return res;
 	}
 }
