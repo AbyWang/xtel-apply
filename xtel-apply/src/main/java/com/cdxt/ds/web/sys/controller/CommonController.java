@@ -19,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CommonController {
 
 
-	
+
 	@RequestMapping("/logout")
 	public String logout(HttpSession session){
 		//清除session
@@ -27,22 +27,22 @@ public class CommonController {
 		session.invalidate();
 		return "redirect:/toLogin";
 	}
-	
-	
+
+
 	@RequestMapping("/toLogin")
 	public ModelAndView toLogin(){
 
 		return new ModelAndView("main/login");
 	}
 
-	
+
 
 	@RequestMapping("/login")
 	public String systemLogin(HttpServletRequest request){
 
 		return "main/main";
 	}
-	
+
 	/**
 	 * 
 	 * @Title: gotoAllLesson
@@ -93,10 +93,10 @@ public class CommonController {
 	 */
 	@RequestMapping("/gotoExerciseList")
 	public String  listExercise(HttpServletRequest request){
-		
+
 		return "exam/exercise_list";
 	}
-	
+
 	/**
 	 * 
 	 * @Title: gotoRegistered
@@ -122,7 +122,21 @@ public class CommonController {
 	public String gotoAddExercise(){
 		return "exam/addExercise";
 	}
-	
+
+	/**
+	 * 
+	 * @Title: gotoAddExercise
+	 * @author wangxiaolong
+	 * @Description:组卷
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/gotoAddExam")
+	public String gotoAddExam(){
+		return "exam/addExam";
+	}
+
+
 	/**
 	 * 
 	 * @Title: gotoMyLibraryList
@@ -135,12 +149,12 @@ public class CommonController {
 	public String gotoMyLibraryList(){
 		return "cloud/myLibrary_list";
 	}
-	
+
 	@RequestMapping("/gotoMyDataList")
 	public String gotoMyDataList(){
 		return "cloud/myData_list";
 	}
-	
+
 	@RequestMapping("/gotoLibraryList")
 	public String gotoLibraryList(){
 		return "res/library_list";
@@ -149,21 +163,21 @@ public class CommonController {
 	public String gotoDataList(){
 		return "res/data_list";
 	}
-	
-	
+
+
 	@RequestMapping("/gotoExamPaperList")
 	public String gotoExamPaperList(){
 		return "exam/examPaper_list";
 	}
-	
+
 	@RequestMapping("/gotoExamPlanList")
 	public String gotoExamPlanList(){
 		return "exam/examPlan_list";
 	}
-	
+
 	@RequestMapping("/gotoOwnGradeList")
 	public String gotoOwnGradeList(){
 		return "exam/ownGrade_list";
 	}
-	
+
 }

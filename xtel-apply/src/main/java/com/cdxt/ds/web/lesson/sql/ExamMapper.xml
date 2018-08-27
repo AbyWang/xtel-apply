@@ -10,8 +10,8 @@
 </select>
 
 
-<!-- 查询已报名信息课程 -->
-<select id="getExaminationPage"  parameterType="int" resultType="map">
+<!-- 查询试卷信息 -->
+<select id="listExaminationPage"  parameterType="int" resultType="map">
 SELECT a.ID,a.COURSEID,a.UPLOADERID,a.TOTALSCORE,a.PASSSCORE,a.NUMBEROFPARTICIPANTS,a.URL,a.PAPERNAME,
 a.UPLOADTIME,b.NAME,b.TYPE
 

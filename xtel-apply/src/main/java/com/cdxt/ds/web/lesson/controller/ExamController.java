@@ -66,10 +66,8 @@ public class ExamController {
 	 */
 	@RequestMapping("/listExcemPaper")
 	@ResponseBody
-	public PagePojo listExcemPaper(HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0")Integer pageNo,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize) throws Exception{
-		UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
-		int userID = userinfo.getUserID();
-		return examService.getExaminationPage(userID,pageNo,pageSize);
+	public PagePojo listExcemPaper(HttpServletRequest request,@RequestParam(value="pageNo",defaultValue="0")Integer pageNo,@RequestParam(value="pageSize",defaultValue="10")Integer pageSize){
+		return examService.listExaminationPage(pageNo,pageSize);
 	}
 
 	/**

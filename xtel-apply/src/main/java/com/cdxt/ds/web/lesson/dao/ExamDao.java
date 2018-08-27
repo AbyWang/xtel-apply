@@ -12,7 +12,7 @@ public interface ExamDao {
 	List<Map<String, Object>>listExercise(Integer userID);
 	
 	
-	List<Map<String, Object>>getExaminationPage(Integer userID);
+	List<Map<String, Object>>listExaminationPage(Integer userID);
 	
 	
 	List<Map<String, Object>> getExaminationArrangementPage(Integer userID);

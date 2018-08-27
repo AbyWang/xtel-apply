@@ -38,10 +38,11 @@ public class ExamServiceImpl implements ExamService {
 
 	}
 	@Override
-	public PagePojo getExaminationPage(int userID,Integer pageNo, Integer pageSize){
-
+	public PagePojo listExaminationPage(Integer pageNo, Integer pageSize){
+		UserInfo userinfo=(UserInfo) session.getAttribute("userInfo");
+		int userID = userinfo.getUserID();
 		PageHelper.offsetPage(pageNo, pageSize);
-		List<Map<String, Object>> mapList= examDao.getExaminationPage(userID);
+		List<Map<String, Object>> mapList= examDao.listExaminationPage(userID);
 		return PageUtil.Map2PageInfo(mapList);
 	}
 
@@ -49,7 +50,6 @@ public class ExamServiceImpl implements ExamService {
 	public PagePojo getExaminationArrangementPage(int userID, Integer pageNo, Integer pageSize) {
 
 		List<Map<String, Object>> mapList=  examDao.getExaminationArrangementPage(userID);
-
 		return PageUtil.Map2PageInfo(mapList);
 	}
 

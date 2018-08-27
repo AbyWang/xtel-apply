@@ -8,7 +8,7 @@ import com.cdxt.ds.web.lesson.pojo.Exercises;
 
 public interface ExamService {
 
-	PagePojo getExaminationPage(int userID,Integer pageNo, Integer pageSize);
+	PagePojo listExaminationPage(Integer pageNo, Integer pageSize);
 
 	PagePojo getExaminationArrangementPage(int userID, Integer pageNo, Integer pageSize);
 
