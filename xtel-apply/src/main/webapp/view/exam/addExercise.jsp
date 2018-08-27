@@ -58,7 +58,7 @@ text-align:left
          <div class="form-group hidden" id="optionNum"> 
               <label class="col-sm-2 control-label">选项个数:</label>
               <div class="col-sm-2">
-              <select  class="form-control" name="numberOfOptions"   id="numberOfOptions" onchange="addOption()">
+              <select  class="form-control" name="numberOfOptions"  id="numberOfOptions" onchange="addOption()">
                     <option value="">请选择</option>
                     <option value="2">2</option>
                     <option value="3">3</option>

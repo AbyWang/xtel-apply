@@ -63,15 +63,15 @@ public class LessonCenterController {
 		return "lesson/register";
 	}
 
-	
-	
+
+
 	@RequestMapping("/addApply")
 	public String addOrUpdateApply(HttpServletRequest request){
 
 		return "lesson/addApply";
 	}
 
-	
+
 	@RequestMapping("/updateApply")
 	public String updateApply(HttpServletRequest request){
 		String courseId=request.getParameter("courseId");
@@ -83,7 +83,7 @@ public class LessonCenterController {
 		return "lesson/updateApply";
 	}
 
-	
+
 	/**
 	 * 
 	 * @Title: getmycuriculumPage
@@ -142,12 +142,19 @@ public class LessonCenterController {
 		return lessonCenterService.listCourseArrangeInfoPage(userID,pageNo,pageSize);
 	}	
 
-	@RequestMapping("/updateCoursePlan")
+	/**
+	 * @Title: updateCoursePlan
+	 * @author wangxiaolong
+	 * @Description:修改课程
+	 * @param
+	 * @return
+	 */
+	@RequestMapping("/updateCourse")
 	@ResponseBody
-	public void updateCoursePlan(HttpServletRequest request,@Param("divArrayStr")String divArrayStr){
+	public ResJson updateCourse(HttpServletRequest request,CourseInfo courseInfo,@Param("divArrayStr")String divArrayStr){
 
+		return lessonCenterService.updateCourse(courseInfo,divArrayStr);
 
-		// lessonCenterService.updateCoursePlan(divArrayStr);
 	}
 	/**
 	 * 
@@ -209,40 +216,6 @@ public class LessonCenterController {
 	//	}
 
 
-	/**
-	 * @描述:跳转加载课程信息页面
-	 * @方法名: toClassInfo
-	 * @return
-	 * @返回类型 String
-	 * @创建人 张兴成
-	 * @创建时间 2018年5月7日下午2:05:03
-	 * @修改人 张兴成
-	 * @修改时间 2018年5月7日下午2:05:03
-	 * @修改备注
-	 * @since
-	 * @throws
-	 */
-	@RequestMapping("/toClassInfopage")
-	public String toClassInfopage(){
-
-		return "classInfoJsp/classPage";
-	}	
-	@RequestMapping("/toInitarrangeClassPage")
-	public String toInitarrangeClassPage(){
-
-		return "classInfoJsp/arrangeClass";
-	}
-	@RequestMapping("/toInitUpdateArrangeClassPage")
-	public String toInitUpdateArrangeClassPage(){
-
-		return "classInfoJsp/updateArrangeClass";
-	}
-	@RequestMapping("/toInitAddClasstestPaperPage")
-	public String toInitAddClasstestPaperPage(){
-
-		return "examPapers/examPapersPage";
-	}
-
 
 	/**
 	 * @描述:新增试卷信息
@@ -300,7 +273,7 @@ public class LessonCenterController {
 		String divArrayStr=request.getParameter("divArrayStr");
 		try {
 			UserInfo userinfo=(UserInfo) request.getSession().getAttribute("userInfo");
-			courseInfo.setLecturerID(userinfo.getUserID());
+			courseInfo.setLectureID(userinfo.getUserID());
 
 			lessonCenterService.insertCourseInfo(courseInfo,divArrayStr);
 			return new ResJson(SysConstants.STRING_ONE,"添加成功");

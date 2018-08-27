@@ -41,4 +41,24 @@ public interface LessonCenterDao {
 	void updateCourseArrangeTime(Map<String, Object> map);
 	
 	void insertExpapersInfo(Map<String, Object> map);
+	
+	/**
+	 * 
+	 * @Title: updateCourse
+	 * @author wangxiaolong
+	 * @Description:修改课程信息
+	 * @param
+	 * @return
+	 */
+	int updateCourse(CourseInfo courseInfo);
+	
+	/**
+	 * 
+	 * @Title: deleteCourse
+	 * @author wangxiaolong
+	 * @Description:
+	 * @param
+	 * @return
+	 */
+	int deleteCourseArrangement(int courseID);
 }

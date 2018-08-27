@@ -18,7 +18,7 @@ session.setAttribute("userId", userId);
 <base href="<%=basePath%>">
 <title>我的课程</title>
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
-<link href="plug-in/layui/css/layui.css" rel="stylesheet">
+<link href="plug-in/layui/css/layui.css" rel="stylesheet" rel="stylesheet">
 <style type="text/css">
 	body{ 
 		margin:0; 
@@ -55,7 +55,7 @@ session.setAttribute("userId", userId);
 
 <body style="overflow-x: hidden;">
 <div class="container">
-
+       <form class="courseForm" method="post" >
 		<div class="row">
 			<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" style="margin-top: 0px;height:18px;padding-top:15px;margin-left:11px;">
 				<span style="font-size: 13px;display: inline-block;">讲师</span>: <label id="dept" style="font-family: MicrosoftYaHei;font-size: 14px;display: inline-block;"><%=userName%></label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -67,35 +67,36 @@ session.setAttribute("userId", userId);
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >课程名称:</span>
-				<input type="text" id="name" name="name"   required="required"  class="form-control"  placeholder="请输入课程名称"/>
+				<input type="text" id="name" name="name"   class="form-control"  datatype="*" nullmsg="请输入课程名称!"   placeholder="请输入课程名称"/>
 	 			&nbsp;&nbsp;&nbsp;&nbsp;
 	 			<span >总课时:</span>
-				 <input type="text" id="totalClass"  name="totalClass"   required="required"  class="form-control"  placeholder="请输入总课时"/>
+				 <input type="text" id="totalClass"  name="totalClass"   datatype="n1-2"  nullmsg="请输入总课时"  errormsg="请输入小于100的整数"  class="form-control"  placeholder="请输入总课时"/>
 	       	</div>
 		</div>
 		
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >价格:</span>
-				<input type="text" id="price" name="price"  required="required"  class="form-control"  placeholder="请输入价格"/>
+				<input type="text" id="price" name="price"  datatype="/^-?[1-9]+(\.\d+)?$|^-?0(\.\d+)?$|^-?[1-9]+[0-9]*(\.\d+)?$/" nullmsg="请输入价格" errormsg="请输入数字"  class="form-control"  placeholder="请输入价格"/>
 	 			&nbsp;&nbsp;&nbsp;&nbsp;
 	 			<span >人数上限:</span>
-				 <input type="text" id="pass"  name="pass"  required="required"  class="form-control"  placeholder="请输入人数上限" />
+				 <input type="text" id="numberOfExpected"  name="numberOfExpected"  datatype="n"  nullmsg="请输入人数上限"  errormsg="请输入整数" class="form-control"  placeholder="请输入人数上限" />
 	       	</div>
 		</div>		
+		
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >课程类型:</span>
-				<label><input type="radio"  name="type"   value="0"><span >传统直播授课</span></input></label>
+				<label><input type="radio"  name="type"  nullmsg="请选择类型"  datatype="*" value="0"><span >传统直播授课</span></input></label>
 				 &nbsp;&nbsp;
-				<label><input type="radio"  name="type"   value="1"><span >智能授课</span></input></label>
+				<label><input type="radio"  name="type"  value="1"><span >智能授课</span></input></label>
 	 		</div>
 		</div>
 		
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >课程简介:</span></br>
-				<textarea class="form-control" rows="3" id="brief" name="brief"></textarea>
+				<textarea class="form-control" rows="3" id="brief"  datatype="*" name="brief"></textarea>
 			</div>
 		</div>
 		<hr color="#e1e5eb">
@@ -111,8 +112,8 @@ session.setAttribute("userId", userId);
         
               <div class="layui-input-inline" name="arrPlan" >
                 <span >开课时间:</span>
-               <input type="text" class="layui-input" id="add_time" >
-               <button type='button' class='btn btn-danger' onclick='deleteElement(this);' style='margin-left: 50px;border-radius:20px;'>删除</button></div>
+               <input type="text" class="layui-input" id="add_time"   >
+               <button type='button' class='btn btn-danger'  onclick='deleteElement(this);' style='margin-left: 50px;border-radius:20px;'>删除</button></div>
 			  </div>
 
 			</div>
@@ -120,76 +121,13 @@ session.setAttribute("userId", userId);
 		<hr color="#eaeced">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 0px;text-align: right;margin-bottom: 5px;">
-				<button class="btn btn-success" type="button" id="btnSubmit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button class="btn btn-success" type="submit" id="btnSubmit">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;
   				<button class="btn btn-danger" type="button" id="btnClose">关闭</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</div>
 		</div>
+		</form>
 	</div> 
-	<!-- 
-<body >
-<form class="layui-form" action="">
-   <div class="layui-form-item">
-   <span style="font-size: 13px;">讲师</span>: <label id="dept" style="font-family: MicrosoftYaHei;font-size: 14px;margin-top:10px"><%=userName%></label>
-  </div>
-   <hr style="color:red;">
-   
-  <div class="layui-form-item">
-    <label class="layui-form-label">总课时:</label>
-    <div class="layui-input-inline">
-        <input type="text" name="totalClass" id="totalClass"   lay-verify="required" placeholder="请输入总课时" autocomplete="off" class="layui-input">
-     </div>
-        <label class="layui-form-label">价格:</label>
-    <div class="layui-input-inline">
-      <input type="text" name="price" id="price"   lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
-    </div>
-
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">人数:</label>
-    <div class="layui-input-inline">
-      <input type="password" name="password"  lay-verify="required" placeholder="请输入人数上限" autocomplete="off" class="layui-input">
-    </div>
-        <label class="layui-form-label">密码框</label>
-    <div class="layui-input-inline">
-      <input type="text" id="pass" name="pass"  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-
-  <div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-block">
-      <input type="radio" name="type" value="0" title="传统直播授课">
-      <input type="radio" name="type"  value="1" title="智能授课" checked>
-    </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">简介:</label>
-    <div class="layui-input-block" style="margin-right:10px">
-      <textarea name="brief" placeholder="请输入内容" class="layui-textarea"></textarea>
-    </div>
-  </div>
-     <hr color="#e1e5eb">
-       <div class="layui-form-item">
-    <label class="layui-form-label">排课:</label>
-    <div class="layui-input-inline">
-      <button class="btn btn-link" type="submit" onclick="addPlan()">添加</button><br/>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-inline" >
-          <input type="text" name="interest_payment_time" class="layui-input" id="fuxiTime_1" class="fuxiTime"  >
-   </div>
-   </div>
-
-  
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-  </div>
-</form> -->
+ 
      <!-- Jquery组件引用 -->
      <script type="text/javascript" src="plug-in/jquery/jquery-1.9.1.js"></script>
          <!-- Validform组件引用 -->
@@ -202,7 +140,7 @@ session.setAttribute("userId", userId);
 
 	 planHtml+='<div class="layui-input-inline" name="arrPlan">',
 	 planHtml+='<span >开课时间:</span>&nbsp;',
-	 planHtml+="<input type='text' class='layui-input' id='add_time"+num+"'>",
+	 planHtml+="<input type='text' class='layui-input'  id='add_time"+num+"'>",
 	 planHtml+=" <button type='button' class='btn btn-danger' onclick='deleteElement(this);' style='margin-left: 50px;border-radius:20px;'>删除</button></div>"
      $("#coursePlan").append(planHtml);
 	    layui.use('laydate', function(){
@@ -219,10 +157,34 @@ session.setAttribute("userId", userId);
     var num = 1;
     
     $(function(){
-    layui.use('layer', function(){
-    	layer= layui.layer;
-    	
-      })
+        layui.use('layer', function(){
+            layer= layui.layer;
+            
+          })
+       $.Tipmsg.r=null;
+      //假定你的信息提示方法为showmsg， 在方法里可以接收参数msg，当然也可以接收到o及cssctl;
+       var showmsg=function(msg){
+    	   layer.msg(msg, {
+    		   icon: 2,
+    		   time: 2000 //2秒关闭（如果不配置，默认是3秒）
+    		 })
+       }
+       $(".courseForm").Validform({
+            tiptype:function(msg,o,cssctl){
+                if(!o.obj.is("form")){
+                	 showmsg(msg);
+                }
+            },
+            //表单提交时触发
+            tipSweep:true,
+            //ajax提交
+            ajaxPost:true,
+            callback:function(form){
+            	console.log(12);
+            	doAdd();
+            }
+       });
+
     layui.use('laydate', function(){
     	  var laydate = layui.laydate;
     	  //执行一个laydate实例
@@ -231,8 +193,7 @@ session.setAttribute("userId", userId);
     	    type: 'datetime'
     	  });
     	});
-
-    });
+   });
 	//关闭按钮功能实现
 	$("#btnClose").bind('click',function(){
 		//关闭窗口 lhgdiaglog方法
@@ -248,7 +209,7 @@ session.setAttribute("userId", userId);
   		$(obj).parent().remove();
 	}
 
-$("#btnSubmit").bind('click',function(){	
+  function doAdd(){	
 
 	 var divArray=[];	
     //排课安排
@@ -263,7 +224,7 @@ $("#btnSubmit").bind('click',function(){
 	      "name":$("#name").val(),
 	      "totalClass":$("#totalClass").val(),
 	      "price":$("#price").val(),
-	      "pass":$("#pass").val(),
+	      "numberOfExpected":$("#numberOfExpected").val(),
 	      "name":$("#name").val(),
 	      "type":$('input[name="type"]:checked').val(),
 	      "brief":$("#brief").val(),
@@ -277,9 +238,7 @@ $("#btnSubmit").bind('click',function(){
 	          $("#btnSubmit").attr({ disabled: "disabled" });
 	       },
           success : function(data) {
-        	  $("#btnSubmit").removeAttr("disabled");  
-        	  layui.use('layer', function(){
-                  var layer = layui.layer;
+        	     $("#btnSubmit").removeAttr("disabled");  
         		  layer.msg(data.message, {
         			  icon: data.code,
         			  time: 2000 //2秒关闭（如果不配置，默认是3秒）
@@ -293,10 +252,9 @@ $("#btnSubmit").bind('click',function(){
         		              parent.layer.close(index);
         	              }
         			});   
-        		});     
          }
     });
-});
+};
 	
 </script>
 </body>

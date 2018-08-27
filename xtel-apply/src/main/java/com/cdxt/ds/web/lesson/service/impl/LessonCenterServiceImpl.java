@@ -31,9 +31,6 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 
 	@Override
 	public PagePojo listAllLesson(int userId, Integer pageNo,Integer pageSize)  {
-		//List<Integer>  list=new ArrayList<Integer>();
-
-		//list=lessonCenterDao.getSignupListbyuserId(userId);
 		//分页
 		PageHelper.startPage(pageNo, pageSize);
 		List<Map<String, Object>> mapList=lessonCenterDao.listAllLesson(userId);
@@ -82,7 +79,7 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 	public ResJson insertSignup(Integer courseId,Integer userId) {
 		int result=0;
 		//Map<String, Object> map=new HashMap<String, Object>();
-	
+
 		result= lessonCenterDao.insertSignup(userId,courseId,new Date().getTime());
 		if(result==1){
 			return new ResJson(SysConstants.STRING_ONE,"保存成功");
@@ -141,11 +138,42 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 
 	}
 
+	/**
+	 * 
+	 * @Title: updateCourse
+	 * @Description:修改课程信息
+	 * @param
+	 * @return
+	 */
+	public ResJson updateCourse(CourseInfo courseInfo,String divArrayStr){
+		int result=0;
+		result=lessonCenterDao.updateCourse(courseInfo);
+		if(result==0){
+			return new ResJson(SysConstants.STRING_ZERO,"修改失败");
+		}
+		//先将所有的课程计划删除掉，再新增
+		lessonCenterDao.deleteCourseArrangement(courseInfo.getCourseID());
 
-//	
-//	public 	void batchMergeCoursePlan（List<CoursePlan>list){
-//		
-//	}
+		if(StringUtils.isNoneBlank(divArrayStr)){
+			List<CoursePlan>list=new ArrayList<CoursePlan>();
+			divArrayStr= divArrayStr.replace("[", "").trim();
+			divArrayStr= divArrayStr.replace("]", "").trim();
+			String[]  divArrays= divArrayStr.split(",");
+			int classNumber=1;
+			for(String planArr:divArrays){
+				CoursePlan coursePlan=new CoursePlan();
+				//排课
+				planArr = planArr.replace("\"", "").trim();
+				coursePlan.setCourseID(courseInfo.getCourseID());
+				coursePlan.setTime(DateUtils.str2Long(planArr));
+				coursePlan.setClassNumber(classNumber);
+				classNumber++;
+				list.add(coursePlan);
+			}
+			lessonCenterDao.batchInsertCoursePlan(list);	
+		}
+		return new ResJson(SysConstants.STRING_ONE,"修改成功");
+	}
 
 	@Override
 	public Map<String, Object> getArrangeByid(int id){
@@ -168,6 +196,9 @@ public class LessonCenterServiceImpl implements LessonCenterService {
 	}
 
 
+	public 	List<Map<String, Object>>listAllValidCourseByUserId(int userId){
 
+		return lessonCenterDao.listMyLessonPage(userId);
+	}
 
 }

@@ -1,11 +1,18 @@
 package com.cdxt.ds.web.sys.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.cdxt.ds.web.lesson.service.LessonCenterService;
+import com.cdxt.ds.web.sys.pojo.UserInfo;
 
 /**
  * @ClassName: SystemController.java
@@ -18,7 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CommonController {
 
-
+	@Autowired
+	private LessonCenterService lessonCenterService;
 
 	@RequestMapping("/logout")
 	public String logout(HttpSession session){
@@ -132,7 +140,11 @@ public class CommonController {
 	 * @return
 	 */
 	@RequestMapping("/gotoAddExam")
-	public String gotoAddExam(){
+	public String gotoAddExam(HttpServletRequest request){
+		HttpSession session=request.getSession();
+		UserInfo userInfo=(UserInfo) session.getAttribute("userInfo");
+		List<Map<String, Object>>mapList=lessonCenterService.listAllValidCourseByUserId(userInfo.getUserID());
+		request.setAttribute("courseList", mapList);
 		return "exam/addExam";
 	}
 

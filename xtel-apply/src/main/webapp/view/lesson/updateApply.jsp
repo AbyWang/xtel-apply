@@ -16,7 +16,7 @@ session.setAttribute("userId", userId);
 <head>
 <meta name="viewport" content="width=device-width" />
 <base href="<%=basePath%>">
-<title>我的课程</title>
+<title>课程申请</title>
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <link href="plug-in/layui/css/layui.css" rel="stylesheet">
 <style type="text/css">
@@ -55,7 +55,7 @@ session.setAttribute("userId", userId);
 
  <body style="overflow-x: hidden;">
 <div class="container">
-
+       <input type="text" id="courseID" class="hidden"  name="courseID"  value="${courseInfo.courseID}"  />
 		<div class="row">
 			<div class="col-xs-12 col-md-12 col-sm-12 col-lg-12" style="margin-top: 0px;height:18px;padding-top:15px;margin-left:11px;">
 				<span style="font-size: 13px;display: inline-block;">讲师</span>: <label id="dept" style="font-family: MicrosoftYaHei;font-size: 14px;display: inline-block;"><%=userName%></label>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -95,20 +95,19 @@ session.setAttribute("userId", userId);
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 				<span >课程简介:</span></br>
-				<textarea class="form-control" rows="3" id="brief" name="brief">${brief}</textarea>
+				<textarea class="form-control" rows="3" id="brief" name="brief">${courseInfo.brief}</textarea>
 			</div>
 		</div>
 		<hr color="#e1e5eb">
 		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 0px;margin-left:11px;margin-bottom: 10px;">
 				<span >排课安排:</span>
-				<button class="btn btn-link" type="submit" onclick="addPlan()">添加</button><br/>
+				<button class="btn btn-link" type="submit" onclick="addPlan()">添加</button><span >(点击提交后才正式生效)</span><br/>
 			</div>
 		</div>
 		
 		<div class="row">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  id="coursePlan" style="margin-left:-1px;">
-        
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"  id="coursePlan" style="margin-left:-1px;">    
               <div class="layui-input-inline" name="arrPlan" >
 	            <c:forEach items="${courseInfo.coursePlan}" var="dto">
                     <div  class="layui-input-inline">
@@ -127,71 +126,6 @@ session.setAttribute("userId", userId);
 			</div>
 		</div>
 	</div> 
-	<!-- 
-<body >
-<form class="layui-form" action="">
-   <div class="layui-form-item">
-   <span style="font-size: 13px;">讲师</span>: <label id="dept" style="font-family: MicrosoftYaHei;font-size: 14px;margin-top:10px"><%=userName%></label>
-  </div>
-   <hr style="color:red;">
-   
-  <div class="layui-form-item">
-    <label class="layui-form-label">总课时:</label>
-    <div class="layui-input-inline">
-        <input type="text" name="totalClass" id="totalClass"   lay-verify="required" placeholder="请输入总课时" autocomplete="off" class="layui-input">
-     </div>
-        <label class="layui-form-label">价格:</label>
-    <div class="layui-input-inline">
-      <input type="text" name="price" id="price"   lay-verify="required" placeholder="请输入价格" autocomplete="off" class="layui-input">
-    </div>
-
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">人数:</label>
-    <div class="layui-input-inline">
-      <input type="password" name="password"  lay-verify="required" placeholder="请输入人数上限" autocomplete="off" class="layui-input">
-    </div>
-        <label class="layui-form-label">密码框</label>
-    <div class="layui-input-inline">
-      <input type="text" id="pass" name="pass"  lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-    </div>
-  </div>
-
-  <div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-block">
-      <input type="radio" name="type" value="0" title="传统直播授课">
-      <input type="radio" name="type"  value="1" title="智能授课" checked>
-    </div>
-  </div>
-  <div class="layui-form-item layui-form-text">
-    <label class="layui-form-label">简介:</label>
-    <div class="layui-input-block" style="margin-right:10px">
-      <textarea name="brief" placeholder="请输入内容" class="layui-textarea"></textarea>
-    </div>
-  </div>
-     <hr color="#e1e5eb">
-       <div class="layui-form-item">
-    <label class="layui-form-label">排课:</label>
-    <div class="layui-input-inline">
-      <button class="btn btn-link" type="submit" onclick="addPlan()">添加</button><br/>
-    </div>
-  </div>
-  <div class="layui-form-item">
-    <label class="layui-form-label">单选框</label>
-    <div class="layui-input-inline" >
-          <input type="text" name="interest_payment_time" class="layui-input" id="fuxiTime_1" class="fuxiTime"  >
-   </div>
-   </div>
-
-  
-  <div class="layui-form-item">
-    <div class="layui-input-block">
-      <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-    </div>
-  </div>
-</form> -->
      <!-- Jquery组件引用 -->
      <script type="text/javascript" src="plug-in/jquery/jquery-1.9.1.js"></script>
      <script type="text/javascript" src="plug-in/My97DatePicker/WdatePicker.js"></script>    
@@ -287,11 +221,12 @@ $("#btnSubmit").bind('click',function(){
 	      "name":$("#name").val(),
 	      "type":$('input[name="type"]:checked').val(),
 	      "brief":$("#brief").val(),
+	       "courseID":$("#courseID").val(),
 	      "divArrayStr":JSON.stringify(divArray)
 	      };
     $.ajax({
 	      type : 'POST',
-	      url : "lessonCenterController/insertCourseInfo",
+	      url : "lessonCenterController/updateCourse",
 	      data: param,
 	      beforeSend: function(){
 	          $("#btnSubmit").attr({ disabled: "disabled" });

@@ -10,6 +10,7 @@
  <result column="totalclass" property="totalClass"/>
  <result column="type" property="type"/>
  <result column="brief" property="brief"/>
+ <result column="lectureid" property="lectureID"/>
  <collection property="coursePlan" ofType="com.cdxt.ds.web.lesson.pojo.CoursePlan">
             <id column="id" property="id"/>
             <result column="classnumber" property="classNumber"/>
@@ -17,22 +18,13 @@
   </collection>
  </resultMap>
 
-<!-- 查询课程信息单一记录 -->
+<!-- 根据id查询课程信息 -->
 <select id="getCourseInfobyCpurseID" parameterType="int" resultMap="courseDetailInfo">
 
-select a.courseID,a.price,a.name,a.totalclass,a.type,a.brief,b.id,
+select a.courseID,a.lectureID,a.price,a.name,a.totalclass,a.type,a.brief,b.id,
  b.classnumber,b.time from  XTEL_COURSEINFO a left join XTEL_CourseArrangement b
- on a.courseID=b.courseID where a.COURSEID=#{cpurseID}
+ on a.courseID=b.courseID where a.COURSEID=#{cpurseID} 
 </select>
-
-
-<!-- 查询已报名信息课程
-<select id="getSignupListbyuserId" parameterType="int" resultType="int">
-
-select COURSEID from XTEL_SignupList WHERE USERID=#{userID}
-</select> -->
-
-
 
 <!-- 通过登录名查询XTEL_COURSEINFO -->
 <select id="listAllLesson"  resultType="map" parameterType="Integer">
@@ -46,9 +38,6 @@ select COURSEID from XTEL_SignupList WHERE USERID=#{userID}
 
 <!-- 根据id查看课程的信息 -->
 <select id="getCourseInfoByid"  resultType="map" parameterType="int">
-<!--  select a.roomid,a.roomname,a.capacity,a.roomstatus,a.lockstatus
-  from ROOMINFOTABLE a 
- 	order by a.roomid-->
  	select  a.COURSEID,a.LECTUREID,a.NAME,a.STATUS,a.TOTALCLASS,a.PRICE,a.TYPE,
  	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,a.BRIEF,a.NUMBEROFEXPECTED,x.USERNAME,x.USERID 
  	from XTEL_COURSEINFO a inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID 
@@ -79,7 +68,6 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
  	a.SOLD,a.PASS,a.LASTCLASSTIME,a.REVIEWERID,x.USERNAME,x.USERID 
  	from XTEL_COURSEINFO a inner join XTEL_USERINFOTABLE x on a.LECTUREID=x.USERID
  	where a.LECTUREID=#{userID}
- 	
 </select>
 <!-- 新增课程信息 -->
 <insert id="insertCourseInfo" parameterType="courseInfo">
@@ -97,19 +85,19 @@ delete from  XTEL_COURSEINFO a where a.COURSEID=#{cpurseID}
 		PRICE,
 		TYPE,
 		SOLD,
-		PASS,
+		NUMBEROFEXPECTED,
 		BRIEF
 		) 
 		VALUES(
 		#{courseID},
-        #{lecturerID},
+        #{lectureID},
 		#{name},
 		#{status},
 		#{totalClass},
 		#{price},
 		#{type},
 		#{sold},
-		#{pass},
+		#{numberOfExpected},
 		#{brief}
 		)
 </insert>
@@ -186,5 +174,16 @@ VALUES(EXAMPAPERS_SQ.NEXTVAL,#{id},#{userID},#{TOTALSCORE},#{PASSSCORE},#{NUMBER
 #{NUMBEROFPASS},#{expapersUrl},#{expapersNmae},#{uplodaTime})
 
 </insert>
+
+<!-- 修改我的课程申请,修改后需要重新审核 -->
+<update id="updateCourse" parameterType="map">
+update XTEL_CourseInfo  set name=#{name},status=1,TotalClass=#{totalClass},
+Price=#{price},type=#{type},Brief=#{brief}  where courseId=#{courseID}
+</update>
+
+<!-- 根据课程id删除课程计划-->
+<delete  id="deleteCourseArrangement"  parameterType="Integer">
+delete from  XTEL_CourseArrangement where CourseID=#{courseID}
+</delete>
 
 </mapper>

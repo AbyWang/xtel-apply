@@ -155,7 +155,7 @@ userInfo.initColumn = function () {
             var layer = layui.layer;
             layer.open({
                    type: 2, 
-                   title:"新增课程申请",
+                   title:"修改课程申请",
                    area: ['700px', '550px'],
                    content: 'lessonCenterController/updateApply?courseId='+courseId ,
                    end:function(){

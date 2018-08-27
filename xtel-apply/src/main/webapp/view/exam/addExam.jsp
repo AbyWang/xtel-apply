@@ -20,36 +20,9 @@ session.setAttribute("userId", userId);
 <base href="<%=basePath%>">
 <link rel="stylesheet" type="text/css" href="plug-in/bootstrap3.3.5/css/bootstrap.min.css?v=246e02790957" >
 <link rel="stylesheet" type="text/css" href="css/ksx-base.css?v=7ff9830e7957">
+<link href="plug-in/layui/css/layui.css" rel="stylesheet">
+<link href="css/addExam.css" rel="stylesheet">
 <title>我的课程</title>
-        <style>
-        .viewFrameWork-body .body-wrapper{padding: 0; }
-        .viewFrameWork-body .body-wrapper .body-content{padding-bottom: 80px;}
-        .body-content .cont-r .tab-area .nav-tabs{border-bottom: 2px solid #188DFF}
-        .body-content .cont-r .tab-area .nav-tabs li{width: 25%}
-        .body-content .cont-r .tab-area .nav-tabs li.active {margin-bottom: 0}
-        .body-content .cont-r .tab-area .nav-tabs li a {border:none;font-size: 16px;text-align: center;padding:21px 0}
-        .body-content .cont-r .tab-area .nav-tabs li.active a {color:#188DFF;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box { font-size:14px;color:#333333;border: 1px solid #DEDEDE;  padding: 35px 54px;  margin-top: 108px;  border-radius: 8px;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar { font-size:14px;color:#333333;border: 1px solid #DEDEDE;  padding: 10px 24px;  margin-top: 15px;  border-radius: 8px; }
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .blue-link {border: 1px solid #1A8CFE;  border-radius: 4px;  font-size: 12px;padding: 6px 15px;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box:hover,.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar:hover{ background: #FFFFFF;  box-shadow: 0 0 8px 0 rgba(47,124,219,0.40);  border-radius: 8px; }
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box h3{ margin-left: -30px;font-size:14px;margin-bottom: 20px}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box input,.body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-bar input{margin-right: 14px}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row {margin-bottom: 18px}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row input {border: 1px solid #D8D8D8; border-radius: 4px;width:35%;padding: 3px 10px;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row span.f-style4 {color:red}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row #selTypeLink { border: 1px solid #1A8CFE;  border-radius: 4px;  padding: 3px 15px; display: inline-block; margin-right: 20px;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .ctb-row #selTypeLink .bulleted-list{ float:right;margin-left: 10px; margin-top: 3px;}
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .btn-div { margin-top: 28px }
-        .body-content .cont-r .tab-area .tab-content div.active .create-test-area .create-test-box .btn-div button { padding:13px 44px; }
-            .body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span {cursor: pointer}
-        .body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span.lib-type1{padding: 6px 15px;border: 1px solid #1A8CFE;  border-radius: 4px;color:#1A8CFE;margin-right: 20px;font-size: 12px}
-        .body-content .cont-r .tab-area .tab-content div.active .in-hand .guide .pick-in-lib span.lib-type0 {padding: 6px 15px;border: 1px solid #999999;  border-radius: 4px;color:#999999;margin-right: 20px;font-size: 12px}
-        .body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-bar {margin-top: 108px}
-        .body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-box {margin-top: 15px}
-        .body-content .cont-r .tab-area .tab-content div.active .in-lib .create-test-box .btn-div a{padding: 13px 44px}
-
-    </style>
 </head>
 <div class="viewFrameWork sidebar-full" id="viewFrameWork">
    <div class="viewFrameWork-main">
@@ -74,18 +47,18 @@ session.setAttribute("userId", userId);
                         第一步:创建试卷
                     </a>
                 </li>
-                <li role="presentation" class=" step2">
-                    <a href="#createTest2" aria-controls="create2" role="tab" data-toggle="">
+                <li role="presentation" class="step2">
+                    <a href="#createTest2" aria-controls="create2" role="tab" data-toggle="tab">
                         第二步:组卷方式
                     </a>
                 </li>
                 <li role="presentation" class="step3">
-                    <a href="#createTest3" aria-controls="create3" role="tab" data-toggle="">
+                    <a href="#createTest3" aria-controls="create3" role="tab" data-toggle="tab">
                         第三步:添加试题
                     </a>
                 </li>
                 <li role="presentation">
-                    <a href="#createTest4" aria-controls="create4" role="tab" data-toggle="">
+                    <a href="#createTest4" aria-controls="create4" role="tab" data-toggle="tab">
                         第四步:发布考试
                     </a>
                 </li>
@@ -101,14 +74,19 @@ session.setAttribute("userId", userId);
                                 </h3>
                                 <div class="ctb-row">
                                     试卷名称：
-                                    <input type="text" name="paper_name" placeholder="请输入试卷名称" value="" />
+                                    <input type="text" name="paperName"  placeholder="请输入试卷名称" value="" />
                                     <span class="f-style4">*</span>
                                 </div>
                                 <div class="ctb-row">
-                                    试卷分类：
-                                    <a href="#"  class="blue-link" id="selTypeLink"><span>试卷分类</span><i class="bulleted-list icon icon-a_btn_classify"></i></a>
-                                    <input type="hidden" class="" name="paper_style" value="140624" />
-                                
+                                   课程：
+                                    <select id="courseId" name="courseId"  placeholder="群组">   
+                                     <option value=''>---请选择---</option>   
+                                     <c:forEach var="item" items="${courseList}">   
+                                     <option value='${item.COURSEID}'>  
+                                         ${item.NAME}  
+                                      </option>   
+                                     </c:forEach>   
+                                    </select>
                                 </div>
                                 <div class="btn-div">
                                     <button  type="button" class="btn btn-primary btn-step1 guide-btn">下一步</button>
@@ -117,7 +95,7 @@ session.setAttribute("userId", userId);
                         </div>
                     </div> 
                     <!--第二步-->
-                    <div role="tabpanel" class="tab-pane " id="createTest2">
+                    <div role="tabpanel" class="tab-pane" id="createTest2">
                         <div class="create-test-area in-hand clearfix">
                             <div class="create-test-box guide animate col-xs-10 col-md-offset-1" step="3">
                                 <h3>
@@ -139,7 +117,7 @@ session.setAttribute("userId", userId);
                                 手工录入试题
                             </div>   
                         </div>
-                  <div class="create-test-area in-lib clearfix">
+                     <div class="create-test-area in-lib clearfix">
                             <div class="create-test-bar create-test-bar3 animate col-xs-10 col-md-offset-1">
                                 <input name="" type="radio" value="" classicons8-notification state-message-icon="item-in-lib" />
                                 从题库中选取试题
@@ -162,9 +140,47 @@ session.setAttribute("userId", userId);
                             </div>
                         </div>   
                     </div>
+                    <!--第三步-->
+                   <div role="tabpanel" class="tab-pane" id="createTest3">
+                        <div class="input-questions-area clearfix">
+                            <div class="info-board">
+                                <div class="total">
+                                    <p>总题数：<span class="test_total">0</span>题</p>
+                                    <p>当前总分：<span class="total_score">0</span>分</p>
+                                </div>
+                            </div>
+                            <div class="questions-board">
+                                <h3><input class="edit-paper-name form-control" type="text" name="edit_paper_name" value="demo" placeholder="点击输入试卷名称"></h3>
+                                <p class="emptyTip">当前试卷还是空空如也，点击下方添加新题型！</p>
+                                <div class="group_main"></div>
+                                <div class="ipt-questions-box ipt-questions-box-w com-drop">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-default btn-s-blue dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <span class="txt">添加试题</span>
+                                            <span class="arrow-d glyphicon glyphicon-triangle-bottom"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-blue" role="menu">
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="1">单选题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="2">多选题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="3">判断题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="4">填空题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="5">问答题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="6">组合题</a></li>
+                                            <li><a href="javascript:void(0)"; class="questionType_add" num="7">录音题</a></li>
+                                        </ul>       
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="batchInput">
+                    </div>
+                    
+                    </div>
                     </form>
                </div>
-           </div>
+              </div>
                 </div>
             </div>
         </div>
@@ -179,24 +195,36 @@ session.setAttribute("userId", userId);
     <script type="text/javascript" src="plug-in/Validform/Validform_v5.3.2.js"></script> 
     <script type="text/javascript" src="plug-in/layui/layui.js"></script>  
     <script type="text/javascript" src="plug-in/wangEditor/release/wangEditor.min.js"></script>  
+    <script src="plug-in/layui/layui.js"></script>
   <script>
-
+       var layer;
         $(function() {
-            $('.pick-test-aera').hide();
+            layui.use('layer', function(){
+                 layer = layui.layer;
+            });
             $('.in-lib').hide();
             $('.pick-random').hide();
             //点击下一步切换标签，跳转到第二步
             $('.btn-step1').click(function() {
-                if($("input[name=paper_name]").val()==""){
-                    alert("请输入试卷名称");
+                if($("input[name=paperName]").val()==""){
+                    layer.msg('请输入试卷名称', {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                      });  
                     return;
-                }else if($("input[name=paper_name]").val().length > 50){
-                    alert("试卷名称不得大于50字！");
+                }else if($("input[name=paperName]").val().length > 50){
+                    layer.msg('试卷名称不得大于50字！', {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                      }); 
                     return;
                 }
 
-                if($("input[name=paper_style]").val()==0){
-                    alert("请选择试卷分类");
+                if($("select[name=courseId]").val()==0){
+                    layer.msg('请选择试卷分类', {
+                        icon: 2,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                      }); 
                     return;
                 }
                 $('.step2').addClass('active');
@@ -208,8 +236,11 @@ session.setAttribute("userId", userId);
       $("#nextStep_2").click(function(e) {
           $("input[name=add_style]").val("select");
           $("input[name=classification]").val("");
-          var type = $("#paper_type_select").val(); //璇曞嵎绫诲瀷
-          manualInputTest("/admin/paper_manual_add", type);
+          var type = $("#paper_type_select").val(); //
+          $('.step3').addClass('active');
+          $('#createTest3').addClass('active');
+          $('#createTest2').removeClass('active');
+          $(".step2").removeClass('active');
        });
             //从题库中选题
             $('.pick-in-lib').children().eq(0).click(function() {

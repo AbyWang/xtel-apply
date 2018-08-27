@@ -10,8 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <meta name="viewport" content="width=device-width" />
 <base href="<%=basePath%>">
 <title>试题管理</title>
-<!-- Jquery组件引用 -->
-<script src="plug-in/jquery/jquery-1.9.1.js"></script>
+
 <!-- bootstrap组件引用 -->
 <link href="plug-in/bootstrap3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <!-- 通用组件引用 -->
@@ -19,11 +18,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <link href="plug-in/layui/css/layui.css" rel="stylesheet">
 <!-- bootstrap table组件以及中文包的引用 -->
 <link href="plug-in/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+<!-- Jquery组件引用 -->
+<script src="plug-in/jquery/jquery-1.9.1.js"></script>
 <script src="plug-in/bootstrap-table/bootstrap-table.js"></script>
 <script src="plug-in/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
 <script src="plug-in/bootstrap3.3.5/js/bootstrap.min.js"></script>
 <script src="plug-in/layui/layui.js"></script>
 <script src="js/bootstrap-curdtools.js"></script>
+<script src="js/common.js"></script>
 </head>
 <body>
      <div class="panel-body" style="padding-bottom:0px;">
@@ -66,7 +68,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
          	<table id="listExercise"></table>
         </div>
     </div>
-<script src="js/common.js"></script>
+
 <script type="text/javascript">
 var path = "<%=path%>";
 $(function () {

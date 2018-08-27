@@ -16,7 +16,7 @@ public class CourseInfo {
 	//课程ID
 	private int courseID;
 	//课程所属的用户ID
-	private int lecturerID;
+	private int lectureID;
 	//课程名称
 	private String name;
 	//课程状态
@@ -44,6 +44,8 @@ public class CourseInfo {
 	private int reviewerID;
 	//课程简介
 	private String brief;
+	//人数上限
+	private int numberOfExpected;
 
 	private List<CoursePlan>coursePlan;
 	
@@ -53,11 +55,12 @@ public class CourseInfo {
 	public void setCourseID(int courseID) {
 		this.courseID = courseID;
 	}
-	public int getLecturerID() {
-		return lecturerID;
+
+	public int getLectureID() {
+		return lectureID;
 	}
-	public void setLecturerID(int lecturerID) {
-		this.lecturerID = lecturerID;
+	public void setLectureID(int lectureID) {
+		this.lectureID = lectureID;
 	}
 	public String getName() {
 		return name;
@@ -126,6 +129,12 @@ public class CourseInfo {
 	}
 	public void setCoursePlan(List<CoursePlan> coursePlan) {
 		this.coursePlan = coursePlan;
+	}
+	public int getNumberOfExpected() {
+		return numberOfExpected;
+	}
+	public void setNumberOfExpected(int numberOfExpected) {
+		this.numberOfExpected = numberOfExpected;
 	}
 
 }
